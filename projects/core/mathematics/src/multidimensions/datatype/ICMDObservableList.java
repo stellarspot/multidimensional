@@ -7,10 +7,10 @@ package multidimensions.datatype;
 
 /**
  *
- * @author stallarspot
+ * @author stellarspot
  */
 public interface ICMDObservableList<Type> extends ICMDList<Type>{
 
-    void addListener(IMDListListener<Type> listener);
+    void addListeners(IMDListListener<Type>... listeners);
 
 }

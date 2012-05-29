@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Женя
+ * @author stellarspot
  */
 public class MDVector extends AMDVector{
 

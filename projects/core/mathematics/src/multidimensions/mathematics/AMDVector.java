@@ -6,7 +6,7 @@ package multidimensions.mathematics;
 
 /**
  *
- * @author Женя
+ * @author stellarspot
  */
 public abstract class AMDVector implements IMDVector {
 

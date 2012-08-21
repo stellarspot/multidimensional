@@ -18,12 +18,15 @@ import multidimensions.shape.IMDUniverse;
  */
 public class MDFrameJava2D extends JFrame {
 
+    public static final int WIDTH = 700;
+    public static final int HEIGHT = 700;
+    
     MDCameraJava2D camera;
 
     public MDFrameJava2D(IMDUniverse universe) {
         this.camera = camera;
         setTitle("Java2D Frame");
-        setSize(700, 700);
+        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         camera = new MDCameraJava2D();
@@ -33,6 +36,8 @@ public class MDFrameJava2D extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
 
         panel.add(camera.canvas, BorderLayout.CENTER);
+        
+        getContentPane().add(panel);
         setVisible(true);
 
     }

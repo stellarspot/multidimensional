@@ -106,7 +106,7 @@ public class MDUniverseCarcas implements IMDShapeCarcass {
             }
 
             public IMDVector getCordinats() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                return coordinats;
             }
 
             @Override

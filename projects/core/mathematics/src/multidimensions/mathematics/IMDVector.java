@@ -20,6 +20,8 @@ public interface IMDVector {
     IMDVector sub(IMDVector v);
     IMDVector mul(double a);
 
+    
+    double[] getElems();
     //ICMDVector getCVector();
 
     boolean equals(IMDVector v, double delta);

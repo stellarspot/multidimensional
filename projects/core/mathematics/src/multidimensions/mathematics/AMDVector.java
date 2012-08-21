@@ -53,7 +53,7 @@ public abstract class AMDVector implements IMDVector {
         return new MDVector(elems);
     }
 
-    protected double[] getElems() {
+    public double[] getElems() {
         double[] elems = new double[getDim()];
         for (int i = 0; i < getDim(); i++) {
             elems[i] = getElem(i);

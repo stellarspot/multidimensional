@@ -16,7 +16,7 @@ import multidimensions.shape.camera.IMDCameraElements;
 public class MDUniverse implements IMDUniverse {
 
     //protected IMDShape shape;
-    protected IMDShapeCarcass carcass;
+    protected IMDUniverseCarcass carcass;
     protected ICMDObservableList<IMDCamera> cameras = new CMDObservableList<IMDCamera>();
 
     
@@ -25,7 +25,7 @@ public class MDUniverse implements IMDUniverse {
         this(new MDUniverseCarcas(), shape);
     }
     
-    public MDUniverse(IMDShapeCarcass carcass, IMDShape shape){
+    public MDUniverse(IMDUniverseCarcass carcass, IMDShape shape){
         this.carcass = carcass;
         carcass.setRoot(shape);
     }

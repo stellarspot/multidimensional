@@ -6,6 +6,7 @@ package multidimensions.java2d.sample;
 
 import multidimensions.java2d.camera.MDFrameJava2D;
 import multidimensions.mathematics.IMDVector;
+import multidimensions.mathematics.MDAxesRotation;
 import multidimensions.mathematics.MDVector;
 import multidimensions.shape.*;
 
@@ -30,7 +31,10 @@ public class MDSampleCross {
         shape.getSegments().addLast(segment1);
         shape.getSegments().addLast(segment2);
 
-
+        double angle = Math.PI / 8;
+        MDAxesRotation rotation = new MDAxesRotation(0, 1, angle);
+        shape.getTransforms().addLast(rotation);
+        
         IMDUniverse universe = new MDUniverse(shape);
 
 

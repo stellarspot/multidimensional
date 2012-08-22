@@ -8,7 +8,11 @@ import java.util.Hashtable;
 import java.util.Map;
 import multidimensions.datatype.CMDList;
 import multidimensions.datatype.ICMDList;
+import multidimensions.datatype.ICMDObservableList;
 import multidimensions.datatype.IMDList;
+import multidimensions.datatype.IMDStack;
+import multidimensions.datatype.MDStack;
+import multidimensions.mathematics.IMDTransform;
 import multidimensions.mathematics.IMDVector;
 import multidimensions.shape.camera.IMDCameraElements;
 import multidimensions.shape.camera.IMDCameraSegment;
@@ -18,7 +22,7 @@ import multidimensions.shape.camera.IMDCameraVertex;
  *
  * @author stellarspot
  */
-public class MDUniverseCarcas implements IMDShapeCarcass {
+public class MDUniverseCarcas implements IMDUniverseCarcass {
 
     IMDShape root;
     //ICMDList<VertexCarcass> vertices = new CMDList<VertexCarcass>();
@@ -49,32 +53,38 @@ public class MDUniverseCarcas implements IMDShapeCarcass {
     }
 
     protected void parse() {
-        parse(root);
+        IMDStack<ICMDObservableList<IMDTransform>> transformsStack = new MDStack<ICMDObservableList<IMDTransform>>();
+        parse(root, transformsStack);
     }
 
-    protected void parse(IMDShape shape) {
+    protected void parse(IMDShape shape, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
+
+        transformsStack.push(shape.getTransforms());
         for (IMDShapeSegment segment : shape.getSegments()) {
-            parseSegment(segment);
+            parseSegment(segment, transformsStack);
         }
 
         for (IMDShape s : shape.getShapes()) {
-            parse(s);
+            parse(s, transformsStack);
         }
+
+        transformsStack.pop();
     }
 
-    protected void parseVertex(IMDShapeVertex vertex) {
+    protected void parseVertex(IMDShapeVertex vertex, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
         System.out.println("parse vertex: " + vertex);
 
         VertexCarcass vertexCarcas = new VertexCarcass(vertex);
+        vertexCarcas.transform(transformsStack);
         verticesMap.put(vertex, vertexCarcas);
         //vertices.addLast(vertexCarcas);
 
     }
 
-    protected void parseSegment(IMDShapeSegment segment) {
+    protected void parseSegment(IMDShapeSegment segment, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
         System.out.println("parse segment: " + segment);
-        parseVertex(segment.getVertex1());
-        parseVertex(segment.getVertex2());
+        parseVertex(segment.getVertex1(), transformsStack);
+        parseVertex(segment.getVertex2(), transformsStack);
 
         VertexCarcass vertex1 = verticesMap.get(segment.getVertex1());
         VertexCarcass vertex2 = verticesMap.get(segment.getVertex2());
@@ -88,13 +98,25 @@ public class MDUniverseCarcas implements IMDShapeCarcass {
     static class VertexCarcass {
 
         IMDShapeVertex source;
+        IMDVector coordinats;
 
         public VertexCarcass(IMDShapeVertex source) {
             this.source = source;
+            this.coordinats = source.getCoordinats();
         }
 
+        
+        void transform(IMDStack<ICMDObservableList<IMDTransform>> transformsStack){
+            for(ICMDObservableList<IMDTransform> transforms: transformsStack){
+                for(IMDTransform transform: transforms){
+                    coordinats = transform.transform(coordinats);
+                }
+                
+            }
+        }
+        
         CameraVertex getCameraVertex() {
-            return new CameraVertex(source.getCoordinats());
+            return new CameraVertex(coordinats);
         }
 
         static class CameraVertex implements IMDCameraVertex {
@@ -113,8 +135,6 @@ public class MDUniverseCarcas implements IMDShapeCarcass {
             public String toString() {
                 return "" + coordinats;
             }
-            
-            
         }
     }
 
@@ -161,8 +181,6 @@ public class MDUniverseCarcas implements IMDShapeCarcass {
             public String toString() {
                 return "(" + vertex1 + ", " + vertex2 + ")";
             }
-            
-            
         }
     }
 

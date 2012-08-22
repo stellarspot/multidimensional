@@ -11,7 +11,7 @@ import multidimensions.shape.camera.IMDCameraElements;
  *
  * @author stellarspot
  */
-public interface IMDShapeCarcass {
+public interface IMDUniverseCarcass {
     void setRoot(IMDShape shape);
     IMDShape getRoot();
     IMDCameraElements getCameraElements();

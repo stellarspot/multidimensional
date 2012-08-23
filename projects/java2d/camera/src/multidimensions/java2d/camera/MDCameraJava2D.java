@@ -23,12 +23,12 @@ public class MDCameraJava2D implements IMDCamera {
 
     @Override
     public void draw(IMDCameraElements elements) {
-        System.out.println("[camera 2D] draw elements");
-        for (IMDCameraSegment segment : elements.getSegments()) {
-            System.out.println("camera segment: " + segment);
-        }
+        //System.out.println("[camera 2D] draw elements");
+//        for (IMDCameraSegment segment : elements.getSegments()) {
+//            System.out.println("camera segment: " + segment);
+//        }
         this.elements = elements;
-        System.out.println("Repaint");
+        //System.out.println("Repaint");
         canvas.repaint();
     }
 

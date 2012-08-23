@@ -44,7 +44,11 @@ public class MDUniverse implements IMDUniverse {
     }
 
     public void evaluate() {
+        
+        carcass.evaluate();
         IMDCameraElements elems = carcass.getCameraElements();
+        
+        
         
         for(IMDCamera camera:cameras){
             camera.draw(elems);

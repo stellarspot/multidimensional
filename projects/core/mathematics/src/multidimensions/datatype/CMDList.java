@@ -43,5 +43,9 @@ public class CMDList<Type> extends MDList<Type> implements ICMDList<Type> {
             super.addLast(item);
         }
     }
+
+    public void clear() {
+        first = last = null;
+    }
     
 }

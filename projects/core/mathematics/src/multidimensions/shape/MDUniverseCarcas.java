@@ -25,7 +25,6 @@ import multidimensions.shape.camera.IMDCameraVertex;
 public class MDUniverseCarcas implements IMDUniverseCarcass {
 
     IMDShape root;
-    //ICMDList<VertexCarcass> vertices = new CMDList<VertexCarcass>();
     ICMDList<SegmentCarcass> segments = new CMDList<SegmentCarcass>();
     Map<IMDShapeVertex, VertexCarcass> verticesMap = new Hashtable<IMDShapeVertex, VertexCarcass>();
 
@@ -37,28 +36,38 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
         return root;
     }
 
+    public void evaluate(){
+        reset();
+        IMDStack<ICMDObservableList<IMDTransform>> transformsStack = new MDStack<ICMDObservableList<IMDTransform>>();
+        parse(root, transformsStack);        
+    }
+    
     public IMDCameraElements getCameraElements() {
-        System.out.println("parse");
-        parse();
+        //System.out.println("parse");
+        //parse();
 
         CameraElements elements = new CameraElements();
-        System.out.println("handle segments");
+        //System.out.println("handle segments");
 
         for (SegmentCarcass segment : segments) {
-            System.out.println("fill segment: " + segment);
+            //System.out.println("fill segment: " + segment);
             elements.segments.addLast(segment.getCameraSegment());
         }
 
         return elements;
     }
 
-    protected void parse() {
-        IMDStack<ICMDObservableList<IMDTransform>> transformsStack = new MDStack<ICMDObservableList<IMDTransform>>();
-        parse(root, transformsStack);
+    private void reset(){
+        segments.clear();
+        verticesMap.clear();
     }
-
+    
     protected void parse(IMDShape shape, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
 
+        for(IMDAnimation animation: shape.getAnimations()){
+            animation.animate();
+        }
+        
         transformsStack.push(shape.getTransforms());
         for (IMDShapeSegment segment : shape.getSegments()) {
             parseSegment(segment, transformsStack);
@@ -72,7 +81,7 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
     }
 
     protected void parseVertex(IMDShapeVertex vertex, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
-        System.out.println("parse vertex: " + vertex);
+        //System.out.println("parse vertex: " + vertex);
 
         VertexCarcass vertexCarcas = new VertexCarcass(vertex);
         vertexCarcas.transform(transformsStack);
@@ -82,7 +91,7 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
     }
 
     protected void parseSegment(IMDShapeSegment segment, IMDStack<ICMDObservableList<IMDTransform>> transformsStack) {
-        System.out.println("parse segment: " + segment);
+        //System.out.println("parse segment: " + segment);
         parseVertex(segment.getVertex1(), transformsStack);
         parseVertex(segment.getVertex2(), transformsStack);
 

@@ -20,9 +20,6 @@ public class MDSampleCross {
 
 
         double d = 100;
-        //IMDVector v1 = new MDVector(d, 0);
-        //IMDVector v2 = new MDVector(0, d);
-
 
         IMDShapeSegment segment1 = new MDShapeSegment(new MDVector(d, 0), new MDVector(-d, 0));
         IMDShapeSegment segment2 = new MDShapeSegment(new MDVector(0, d), new MDVector(0, -d));
@@ -31,9 +28,20 @@ public class MDSampleCross {
         shape.getSegments().addLast(segment1);
         shape.getSegments().addLast(segment2);
 
-        double angle = Math.PI / 8;
-        MDAxesRotation rotation = new MDAxesRotation(0, 1, angle);
+        final MDAxesRotation rotation = new MDAxesRotation(0, 1);
         shape.getTransforms().addLast(rotation);
+        
+        IMDAnimation animation = new IMDAnimation() {
+
+            @Override
+            public void animate() {
+                //System.out.println("Animate");
+                //double N = 360;
+                double deltaAngle = 5 * 2 * Math.PI / 360;
+                rotation.addAngle(deltaAngle);
+            }
+        };
+        shape.getAnimations().addLast(animation);
         
         IMDUniverse universe = new MDUniverse(shape);
 

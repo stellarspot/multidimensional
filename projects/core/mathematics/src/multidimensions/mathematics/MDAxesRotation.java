@@ -18,7 +18,9 @@ public class MDAxesRotation implements IMDTransform{
 
     double cos;
     double sin;
-
+    public MDAxesRotation(int n, int m) {
+        this(n, m, 0.0);
+    }
     public MDAxesRotation(int n, int m, double angle) {
         this.n = n;
         this.m = m;
@@ -35,12 +37,16 @@ public class MDAxesRotation implements IMDTransform{
         cos = Math.cos(angle);
         sin = Math.sin(angle);
     }
+    
+    public void addAngle(double deltaAngle){
+        setAngle(angle + deltaAngle);
+    }
 
     public IMDVector transform(IMDVector vector) {
 
         //ICMDVector v = vector.getCVector();
         
-        int dim = vector.getDim();
+        //int dim = vector.getDim();
         
         double[] elems = vector.getElems();
         

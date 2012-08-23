@@ -16,4 +16,5 @@ public interface ICMDList<Type> extends IMDList<Type> {
     void addFirst(Iterable<Type> items);
     void addLast(Iterable<Type> items);
 
+    void clear();
 }

@@ -17,6 +17,7 @@ public class MDShape implements IMDShape {
     protected ICMDObservableList<IMDShape> shapes = new CMDObservableList<IMDShape>();
     protected ICMDObservableList<IMDShapeSegment> segments = new CMDObservableList<IMDShapeSegment>();
     protected ICMDObservableList<IMDTransform> transforms = new CMDObservableList<IMDTransform>();
+    protected ICMDObservableList<IMDAnimation> animations = new CMDObservableList<IMDAnimation>();
 
     
     public ICMDObservableList<IMDShapeSegment> getSegments() {
@@ -29,5 +30,9 @@ public class MDShape implements IMDShape {
 
     public ICMDObservableList<IMDTransform> getTransforms() {
         return transforms;
+    }
+    
+    public ICMDObservableList<IMDAnimation> getAnimations() {
+        return animations;
     }
 }

@@ -16,4 +16,5 @@ public interface IMDShape {
     ICMDObservableList<IMDShape> getShapes();
     ICMDObservableList<IMDShapeSegment> getSegments();
     ICMDObservableList<IMDTransform> getTransforms();
+    ICMDObservableList<IMDAnimation> getAnimations();
 }

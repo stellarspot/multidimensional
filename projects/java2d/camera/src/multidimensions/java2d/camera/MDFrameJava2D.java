@@ -5,8 +5,6 @@
 package multidimensions.java2d.camera;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -20,7 +18,6 @@ public class MDFrameJava2D extends JFrame {
 
     public static final int WIDTH = 700;
     public static final int HEIGHT = 700;
-    
     MDCameraJava2D camera;
 
     public MDFrameJava2D(IMDUniverse universe) {
@@ -36,13 +33,30 @@ public class MDFrameJava2D extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
 
         panel.add(camera.canvas, BorderLayout.CENTER);
-        
+
         getContentPane().add(panel);
         setVisible(true);
 
+        animate(universe);
     }
-    
-    public static void invokeOnEDT(final IMDUniverse universe) throws Exception{
+
+    void animate(final IMDUniverse universe) {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(25);
+                    } catch (InterruptedException ex) {
+                    }
+                    universe.evaluate();
+                }
+            }
+        }).start();
+    }
+
+    public static void invokeOnEDT(final IMDUniverse universe) throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
 
             @Override

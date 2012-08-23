@@ -14,5 +14,6 @@ import multidimensions.shape.camera.IMDCameraElements;
 public interface IMDUniverseCarcass {
     void setRoot(IMDShape shape);
     IMDShape getRoot();
+    void evaluate();
     IMDCameraElements getCameraElements();
 }

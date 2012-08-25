@@ -18,7 +18,10 @@ public class MDFrameJava2D extends JFrame {
 
     public static final int WIDTH = 700;
     public static final int HEIGHT = 700;
+
     MDCameraJava2D camera;
+
+    private static int DELAY = 25;
 
     public MDFrameJava2D(IMDUniverse universe) {
         this.camera = camera;
@@ -47,7 +50,7 @@ public class MDFrameJava2D extends JFrame {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(25);
+                        Thread.sleep(DELAY);
                     } catch (InterruptedException ex) {
                     }
                     universe.evaluate();

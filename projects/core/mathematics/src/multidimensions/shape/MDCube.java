@@ -5,14 +5,14 @@
 package multidimensions.shape;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import multidimensions.datatype.CMDList;
+import multidimensions.datatype.ICMDList;
 
 /**
  *
  * @author stellarspot
  */
-public class MDCube {
+public class MDCube extends MDShape {
 
     int dim;
     double d;
@@ -23,72 +23,55 @@ public class MDCube {
         init();
     }
 
-    void init() {
+    protected void init() {
         int N = dim;
-        int NN = 1 << N;
-        int V = 2;
+        int N2 = 1 << N;
 
-        System.out.println("NN: " + NN);
+        System.out.println("N: " + N);
+        System.out.println("N2: " + N2);
 
-        double[][] vertices = new double[NN][];
-        double[][] copy = new double[NN][];
-        //CMDList<Pair> pairs = new CMDList<Pair>();
-        //CMDList<Object> pairs = new CMDList<Object>();
-        List<Pair> pairs = new LinkedList<Pair>();
+        double[][] array = new double[N2][N];
 
-        double[] v1 = new double[N];
-        double[] v2 = new double[N];
-        v1[0] = d;
-        v2[0] = -d;
+        double[] counter = new double[N];
 
-        vertices[0] = v1;
-        vertices[1] = v2;
+        ICMDList<Pair> pairs = new CMDList<Pair>();
 
-        pairs.add(new Pair(v1, v2));
+        for (int n = 0; n < N; n++) {
+            counter[n] = -d;
+        }
 
-        for (int i = 1; i < N; i++) {
-            System.out.println("V: " + V);
-            //show("Vertices: ", vertices);
-            copy(vertices, copy, V);
-            //show("Copy: ", copy);
+        for (int n2 = 0; n2 < N2; n2++) {
+            array[n2] = Arrays.copyOf(counter, N);
+            for (int n = 0; n < N; n++) {
+                if (counter[n] == -d) {
+                    counter[n] = d;
+                    break;
+                } else {
+                    counter[n] = -d;
 
-            for (int j = 0; j < V; j++) {
-                vertices[j][i] = d;
-                copy[j][i] = -d;
-
-                pairs.add(new Pair(vertices[j], copy[j]));
-
-                for (int v = 0; v < V; v++) {
-                    vertices[V + v] = copy[v];
                 }
             }
-            V *= 2;
-            show("Vertices: ", vertices);
-        }
-
-        System.out.println("pairs: " + pairs.size());
-
-        for(Pair pair: pairs){
-            System.out.println(pair);
-        }
-
-    }
-
-    void copy(double[][] from, double[][] to, int N) {
-        for (int i = 0; i < N; i++) {
-            to[i] = Arrays.copyOf(from[i], dim);
-        }
-    }
-
-    void show(String text, double[][] array) {
-        System.out.println(text + ": " + array.length);
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                break;
+            for (int n = 0; n < N; n++) {
+                if (counter[n] == d) {
+                    int step = 1 << n;
+                    //System.out.println("n: " + n2 + ", step: " + step);
+                    pairs.addLast(new Pair(n2 + 1, n2 + 1 - step));
+                }
             }
-
-            System.out.println(i + " " + toString(array[i]));
         }
+
+
+        IMDShapeVertex[] vertices = new MDShapeVertex[N2];
+        for (int n2 = 0; n2 < N2; n2++) {
+            //System.out.println(n2 + ") " + toString(array[n2]));
+            vertices[n2] = new MDShapeVertex(array[n2]);
+        }
+
+        for (Pair pair : pairs) {
+            //System.out.println(pair);
+            segments.addLast(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
+        }
+
     }
 
     String toString(double[] array) {
@@ -102,17 +85,17 @@ public class MDCube {
 
     class Pair {
 
-        double[] v1;
-        double[] v2;
+        int index1;
+        int index2;
 
-        public Pair(double[] v1, double[] v2) {
-            this.v1 = v1;
-            this.v2 = v2;
+        public Pair(int index1, int index2) {
+            this.index1 = index1;
+            this.index2 = index2;
         }
 
         @Override
         public String toString() {
-            return "Pair: " + toString(v1) + ", " + toString(v2);
+            return "Pair: " + index1 + ", " + index2;
         }
     }
 }

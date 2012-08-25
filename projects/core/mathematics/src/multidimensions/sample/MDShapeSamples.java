@@ -11,9 +11,9 @@ import multidimensions.shape.MDCube;
  *
  * @author stellarspot
  */
-public class ShapeSamples {
+public class MDShapeSamples {
     public static void main(String[] args) {
-        //new MDCube(3, 100);
-        new MDCube(2, 100);
+        //new MDCube(2, 100);
+        new MDCube(3, 100);
     }
 }

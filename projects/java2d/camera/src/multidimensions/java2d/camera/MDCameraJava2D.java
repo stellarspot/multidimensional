@@ -7,6 +7,7 @@ package multidimensions.java2d.camera;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import javax.swing.SwingUtilities;
 import multidimensions.mathematics.IMDVector;
 import multidimensions.shape.camera.IMDCamera;
 import multidimensions.shape.camera.IMDCameraElements;
@@ -22,14 +23,19 @@ public class MDCameraJava2D implements IMDCamera {
     CameraCanvas canvas = new CameraCanvas();
 
     @Override
-    public void draw(IMDCameraElements elements) {
+    public void draw(final IMDCameraElements elements) {
         //System.out.println("[camera 2D] draw elements");
 //        for (IMDCameraSegment segment : elements.getSegments()) {
 //            System.out.println("camera segment: " + segment);
 //        }
-        this.elements = elements;
         //System.out.println("Repaint");
-        canvas.repaint();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                MDCameraJava2D.this.elements = elements;
+                canvas.repaint();
+            }
+        });
     }
 
     class CameraCanvas extends Canvas {
@@ -49,7 +55,7 @@ public class MDCameraJava2D implements IMDCamera {
 
             g2.translate(MDFrameJava2D.WIDTH / 2, MDFrameJava2D.HEIGHT / 2);
             g2.scale(1, -1);
-            
+
             //g2.drawOval(-100, -100, 200, 200);
 
             for (IMDCameraSegment segment : elements.getSegments()) {
@@ -57,22 +63,20 @@ public class MDCameraJava2D implements IMDCamera {
                 drawSegment(g2, segment);
             }
         }
-        
-        void drawSegment(Graphics2D g, IMDCameraSegment segment){
-            
+
+        void drawSegment(Graphics2D g, IMDCameraSegment segment) {
+
             IMDVector v1 = segment.getVertex1().getCordinats();
             IMDVector v2 = segment.getVertex2().getCordinats();
-            
+
             int x1 = (int) v1.getElem(0);
             int y1 = (int) v1.getElem(1);
             int x2 = (int) v2.getElem(0);
             int y2 = (int) v2.getElem(1);
-            
+
             //System.out.printf("x1: %d, y1: %d, x2: %d, y2: %d\n", x1, y1, x2, y2);
-            
+
             g.drawLine(x1, y1, x2, y2);
         }
-        
-        
     }
 }

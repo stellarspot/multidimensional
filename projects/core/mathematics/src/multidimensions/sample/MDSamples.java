@@ -10,7 +10,7 @@ package multidimensions.sample;
  */
 public enum MDSamples {
 
-    SHAPE("MD Shapes", MDShapeSamples.values());
+    SHAPE("MD Shapes", MDShapeSample.values());
     String category;
     IMDSample[] samples;
 

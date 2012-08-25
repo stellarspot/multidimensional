@@ -4,7 +4,7 @@
  */
 package multidimensions.java2d.sample;
 
-import multidimensions.sample.MDShapeSamples;
+import multidimensions.sample.MDShapeSample;
 import multidimensions.java2d.camera.MDFrameJava2D;
 
 /**
@@ -15,7 +15,9 @@ public class MDJava2DSamples {
 
     public static void main(String[] args) throws Exception {
         int dim = 4;
-        MDFrameJava2D.invokeOnEDT(MDShapeSamples.CUBE.getUniverse(dim));
+        MDFrameJava2D.invokeOnEDT(MDShapeSample.values());
+        //MDFrameJava2D.invokeOnEDT(MDShapeSamples.CROSS.getUniverse(dim));
+        //MDFrameJava2D.invokeOnEDT(MDShapeSample.CUBE.getUniverse(dim));
     }
 }
 

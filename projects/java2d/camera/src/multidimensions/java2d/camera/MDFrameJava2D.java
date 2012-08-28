@@ -5,7 +5,10 @@
 package multidimensions.java2d.camera;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -26,7 +29,6 @@ public class MDFrameJava2D extends JFrame {
     public static final int HEIGHT = 700;
     //MDCameraJava2D camera;
     private static int DELAY = 25;
-
     private volatile IMDUniverse universe;
 
     public MDFrameJava2D(IMDUniverse universe) {
@@ -53,9 +55,6 @@ public class MDFrameJava2D extends JFrame {
         animate();
     }
 
-
-
-
     JPanel getUniversePanel(IMDUniverse universe) {
         this.universe = universe;
         MDCameraJava2D camera = new MDCameraJava2D();
@@ -65,10 +64,17 @@ public class MDFrameJava2D extends JFrame {
         return panel;
     }
 
-    JPanel getSamplesPanel(MDShapeSample[] samples) {
+    JPanel getSamplesPanel(final MDShapeSample[] samples) {
 
-        MDCameraJava2D camera = new MDCameraJava2D();
+        final MDCameraJava2D camera = new MDCameraJava2D();
         //universe.getCameras().addLast(camera);
+
+        final JComboBox dimensions = new JComboBox();
+        int N = 8;
+        for (int i = 0; i < N; i++) {
+            dimensions.addItem(i + 1);
+        }
+        dimensions.setSelectedIndex(3);
 
         final IMDUniverse[] universes = new IMDUniverse[samples.length];
         DefaultListModel<MDShapeSample> categoriesModel = new DefaultListModel<MDShapeSample>();
@@ -81,21 +87,45 @@ public class MDFrameJava2D extends JFrame {
 
         universe = universes[0];
 
-        JList categories = new JList(categoriesModel);
+        final JList categories = new JList(categoriesModel);
         categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        categories.setSelectedIndex(0);
         categories.addListSelectionListener(new ListSelectionListener() {
+            int selectedIndex = categories.getSelectedIndex();
 
             public void valueChanged(ListSelectionEvent e) {
-                System.out.println("value: " + e.getFirstIndex());
-                universe = universes[e.getFirstIndex()];
+//                System.out.println("");
+//                System.out.println("value is adjusted: " + e.getValueIsAdjusting());
+//                System.out.println("value first: " + e.getFirstIndex());
+//                System.out.println("value last: " + e.getLastIndex());
+                int index = categories.getSelectedIndex();
+                if (selectedIndex != index) {
+                    universe = universes[index];
+                    selectedIndex = index;
+                }
+
             }
         });
 
+        dimensions.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                int index = categories.getSelectedIndex();
+                universes[index] = samples[index].getUniverse(dimensions.getSelectedIndex() + 1);
+                universe = universes[index];
+                universe.getCameras().addLast(camera);
+                System.out.println("dim: " + dimensions.getSelectedIndex());
+            }
+        });
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel listPanel = new JPanel(new BorderLayout());
-        listPanel.add(categories, BorderLayout.WEST);
-        listPanel.add(camera.canvas, BorderLayout.CENTER);
+        listPanel.add(dimensions, BorderLayout.NORTH);
+        listPanel.add(categories, BorderLayout.CENTER);
+        mainPanel.add(listPanel, BorderLayout.WEST);
+        mainPanel.add(camera.canvas, BorderLayout.CENTER);
         //animate();
-        return listPanel;
+        return mainPanel;
     }
 
     void animate() {

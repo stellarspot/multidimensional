@@ -27,11 +27,7 @@ public class MDCube extends MDShape {
         int N = dim;
         int N2 = 1 << N;
 
-        System.out.println("N: " + N);
-        System.out.println("N2: " + N2);
-
         double[][] array = new double[N2][N];
-
         double[] counter = new double[N];
 
         ICMDList<Pair> pairs = new CMDList<Pair>();
@@ -42,33 +38,30 @@ public class MDCube extends MDShape {
 
         for (int n2 = 0; n2 < N2; n2++) {
             array[n2] = Arrays.copyOf(counter, N);
+            boolean incFlag = true;
+
             for (int n = 0; n < N; n++) {
                 if (counter[n] == -d) {
-                    counter[n] = d;
-                    break;
+                    if (incFlag) {
+                        counter[n] = d;
+                        incFlag = false;
+                    }
                 } else {
-                    counter[n] = -d;
+                    if (incFlag) {
+                        counter[n] = -d;
 
-                }
-            }
-            for (int n = 0; n < N; n++) {
-                if (counter[n] == d) {
-                    int step = 1 << n;
-                    //System.out.println("n: " + n2 + ", step: " + step);
-                    pairs.addLast(new Pair(n2 + 1, n2 + 1 - step));
+                    }
+                    pairs.addLast(new Pair(n2, n2 - (1 << n)));
                 }
             }
         }
 
-
         IMDShapeVertex[] vertices = new MDShapeVertex[N2];
         for (int n2 = 0; n2 < N2; n2++) {
-            //System.out.println(n2 + ") " + toString(array[n2]));
             vertices[n2] = new MDShapeVertex(array[n2]);
         }
 
         for (Pair pair : pairs) {
-            //System.out.println(pair);
             segments.addLast(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
         }
 

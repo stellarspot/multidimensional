@@ -10,6 +10,7 @@ import multidimensions.shape.IMDShape;
 import multidimensions.shape.IMDUniverse;
 import multidimensions.shape.MDCross;
 import multidimensions.shape.MDCube;
+import multidimensions.shape.MDSphere;
 import multidimensions.shape.MDUniverse;
 
 /**
@@ -20,7 +21,7 @@ public enum MDShapeSample implements IMDSample {
 
     CROSS {
         public String getTitle() {
-            return "MD Cross";
+            return "Cross";
         }
 
         public IMDUniverse getUniverse(int dim) {
@@ -29,14 +30,22 @@ public enum MDShapeSample implements IMDSample {
     },
     CUBE {
         public String getTitle() {
-            return "MD Cube";
+            return "Cube";
         }
 
         public IMDUniverse getUniverse(int dim) {
             return getUniverse(dim, new MDCube(dim, d));
         }
-    };
+    },
+    SPHERE {
+        public String getTitle() {
+            return "Sphere";
+        }
 
+        public IMDUniverse getUniverse(int dim) {
+            return getUniverse(dim, new MDSphere(dim, 2 * d, 10));
+        }
+    };
     static final int d = 100;
 
     static IMDUniverse getUniverse(int dim, IMDShape shape) {
@@ -58,4 +67,5 @@ public enum MDShapeSample implements IMDSample {
         return new MDUniverse(shape);
 
     }
+
 }

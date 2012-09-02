@@ -18,6 +18,7 @@ public class MDJava2DSamples {
         MDFrameJava2D.invokeOnEDT(MDShapeSample.values());
         //MDFrameJava2D.invokeOnEDT(MDShapeSamples.CROSS.getUniverse(dim));
         //MDFrameJava2D.invokeOnEDT(MDShapeSample.CUBE.getUniverse(dim));
+        //MDFrameJava2D.invokeOnEDT(MDShapeSample.SPHERE.getUniverse(3));
     }
 }
 

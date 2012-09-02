@@ -55,8 +55,10 @@ public class MDAxesRotation implements IMDTransform {
 
         return new MDVector(elems);
     }
-
     public static MDAxesRotation[] getRotations(int dim) {
+        return getRotations(dim, 0);
+    }
+    public static MDAxesRotation[] getRotations(int dim, double angle) {
 
         MDAxesRotation[] rotations = new MDAxesRotation[dim * (dim - 1) / 2];
 
@@ -64,7 +66,7 @@ public class MDAxesRotation implements IMDTransform {
 
         for (int n = 0; n < dim; n++) {
             for (int m = 0; m < n; m++) {
-                rotations[i] = new MDAxesRotation(n, m);
+                rotations[i] = new MDAxesRotation(n, m, angle);
                 i++;
             }
         }

@@ -34,11 +34,11 @@ public class MDSphere extends MDShape {
         }
 
         int M1 = M - 1;
-        System.out.println("N :" + N);
-        System.out.println("NM: " + NM);
-        System.out.println("M : " + M);
-        System.out.println("M1: " + M1);
-        System.out.println("d: " + d);
+//        System.out.println("N :" + N);
+//        System.out.println("NM: " + NM);
+//        System.out.println("M : " + M);
+//        System.out.println("M1: " + M1);
+//        System.out.println("d: " + d);
 
         int[][] array = new int[NM][N];
         int[] counter = new int[N];

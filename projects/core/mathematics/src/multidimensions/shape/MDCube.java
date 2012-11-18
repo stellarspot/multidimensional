@@ -26,6 +26,7 @@ public class MDCube extends MDShape {
     protected void init() {
         int N = dim;
         int N2 = 1 << N;
+        double radius = d / 2;
 
         double[][] array = new double[N2][N];
         double[] counter = new double[N];
@@ -33,7 +34,7 @@ public class MDCube extends MDShape {
         ICMDList<Pair> pairs = new CMDList<Pair>();
 
         for (int n = 0; n < N; n++) {
-            counter[n] = -d;
+            counter[n] = -radius;
         }
 
         for (int n2 = 0; n2 < N2; n2++) {
@@ -41,14 +42,14 @@ public class MDCube extends MDShape {
             boolean incFlag = true;
 
             for (int n = 0; n < N; n++) {
-                if (counter[n] == -d) {
+                if (counter[n] == -radius) {
                     if (incFlag) {
-                        counter[n] = d;
+                        counter[n] = radius;
                         incFlag = false;
                     }
                 } else {
                     if (incFlag) {
-                        counter[n] = -d;
+                        counter[n] = -radius;
 
                     }
                     pairs.addLast(new Pair(n2, n2 - (1 << n)));

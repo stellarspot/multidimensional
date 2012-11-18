@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import multidimensions.sample.MDSampleSet;
 import multidimensions.sample.MDShapeSample;
 import multidimensions.shape.IMDUniverse;
 
@@ -27,7 +28,6 @@ public class MDFrameJava2D extends JFrame {
 
     public static final int WIDTH = 700;
     public static final int HEIGHT = 700;
-    //MDCameraJava2D camera;
     private static int DELAY = 25;
     private volatile IMDUniverse universe;
 
@@ -66,65 +66,54 @@ public class MDFrameJava2D extends JFrame {
 
     JPanel getSamplesPanel(final MDShapeSample[] samples) {
 
+        int N = 8;
+        final double radius = 200;
+        final int M = 10;
+        int currentDimension = 3;
+
         final MDCameraJava2D camera = new MDCameraJava2D();
-        //universe.getCameras().addLast(camera);
+        final MDSampleSet sampleSet = new MDSampleSet(N, camera, samples);
 
         final JComboBox dimensions = new JComboBox();
-        int N = 8;
         for (int i = 0; i < N; i++) {
             dimensions.addItem(i + 1);
         }
-        dimensions.setSelectedIndex(3);
 
-        final IMDUniverse[] universes = new IMDUniverse[samples.length];
+        dimensions.setSelectedIndex(currentDimension);
+        sampleSet.setDimension(currentDimension);
+        dimensions.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sampleSet.setDimension(dimensions.getSelectedIndex());
+                universe = sampleSet.getUniverse();
+            }
+        });
+
         DefaultListModel<MDShapeSample> categoriesModel = new DefaultListModel<MDShapeSample>();
 
         for (int i = 0; i < samples.length; i++) {
-            universes[i] = samples[i].getUniverse(4);
-            universes[i].getCameras().addLast(camera);
             categoriesModel.addElement(samples[i]);
         }
 
-        universe = universes[0];
+        universe = sampleSet.getUniverse();
 
-        final JList categories = new JList(categoriesModel);
-        categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        categories.setSelectedIndex(0);
-        categories.addListSelectionListener(new ListSelectionListener() {
-            int selectedIndex = categories.getSelectedIndex();
 
+        final JList sampleList = new JList(categoriesModel);
+        sampleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        sampleList.setSelectedIndex(0);
+        sampleList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-//                System.out.println("");
-//                System.out.println("value is adjusted: " + e.getValueIsAdjusting());
-//                System.out.println("value first: " + e.getFirstIndex());
-//                System.out.println("value last: " + e.getLastIndex());
-                int index = categories.getSelectedIndex();
-                if (selectedIndex != index) {
-                    universe = universes[index];
-                    selectedIndex = index;
-                }
-
+                sampleSet.setSampleIndex(sampleList.getSelectedIndex());
+                universe = sampleSet.getUniverse();
             }
         });
 
-        dimensions.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                int index = categories.getSelectedIndex();
-                universes[index] = samples[index].getUniverse(dimensions.getSelectedIndex() + 1);
-                universe = universes[index];
-                universe.getCameras().addLast(camera);
-                System.out.println("dim: " + dimensions.getSelectedIndex());
-            }
-        });
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel listPanel = new JPanel(new BorderLayout());
         listPanel.add(dimensions, BorderLayout.NORTH);
-        listPanel.add(categories, BorderLayout.CENTER);
+        listPanel.add(sampleList, BorderLayout.CENTER);
         mainPanel.add(listPanel, BorderLayout.WEST);
         mainPanel.add(camera.canvas, BorderLayout.CENTER);
-        //animate();
         return mainPanel;
     }
 

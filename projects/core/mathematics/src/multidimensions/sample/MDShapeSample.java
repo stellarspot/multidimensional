@@ -24,8 +24,8 @@ public enum MDShapeSample implements IMDSample {
             return "Cross";
         }
 
-        public IMDUniverse getUniverse(int dim) {
-            return getUniverse(dim, new MDCross(dim, d));
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDCross(dim, radius));
         }
     },
     CUBE {
@@ -33,8 +33,8 @@ public enum MDShapeSample implements IMDSample {
             return "Cube";
         }
 
-        public IMDUniverse getUniverse(int dim) {
-            return getUniverse(dim, new MDCube(dim, d));
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDCube(dim, radius));
         }
     },
     SPHERE {
@@ -42,8 +42,8 @@ public enum MDShapeSample implements IMDSample {
             return "Sphere";
         }
 
-        public IMDUniverse getUniverse(int dim) {
-            return getUniverse(dim, new MDSphere(dim, 2 * d, 10));
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDSphere(dim, radius, M));
         }
     };
     static final int d = 100;

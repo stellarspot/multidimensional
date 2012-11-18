@@ -19,18 +19,18 @@ public class MDUniverse implements IMDUniverse {
     protected IMDUniverseCarcass carcass;
     protected ICMDObservableList<IMDCamera> cameras = new CMDObservableList<IMDCamera>();
 
-    
-    
-    public MDUniverse(IMDShape shape) {        
+
+
+    public MDUniverse(IMDShape shape) {
         this(new MDUniverseCarcas(), shape);
     }
-    
+
     public MDUniverse(IMDUniverseCarcass carcass, IMDShape shape){
         this.carcass = carcass;
         carcass.setRoot(shape);
     }
-    
-    
+
+
     public IMDShape getShape() {
         return carcass.getRoot();
     }
@@ -44,12 +44,12 @@ public class MDUniverse implements IMDUniverse {
     }
 
     public void evaluate() {
-        
+
         carcass.evaluate();
         IMDCameraElements elems = carcass.getCameraElements();
-        
-        
-        
+
+
+
         for(IMDCamera camera:cameras){
             camera.draw(elems);
         }

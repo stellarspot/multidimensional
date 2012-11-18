@@ -50,20 +50,6 @@ public enum MDShapeSample implements IMDSample {
 
     static IMDUniverse getUniverse(int dim, IMDShape shape) {
 
-        final MDAxesRotation[] rotations = MDAxesRotation.getRotations(dim);
-        shape.getTransforms().addLast(rotations);
-
-        IMDAnimation animation = new IMDAnimation() {
-            @Override
-            public void animate() {
-                double deltaAngle = 0.7 * 2 * Math.PI / 360;
-                for (int i = 0; i < rotations.length; i++) {
-                    rotations[i].addAngle(deltaAngle);
-                }
-            }
-        };
-
-        shape.getAnimations().addLast(animation);
         return new MDUniverse(shape);
 
     }

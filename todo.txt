@@ -1,5 +1,6 @@
 
 + Add SampleSet
+  + Remove Rotate transforms from samples
 
 - Add MDPlotter
   - Add MDPlotterSet

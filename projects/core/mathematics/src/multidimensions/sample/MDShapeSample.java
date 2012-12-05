@@ -20,17 +20,30 @@ import multidimensions.shape.MDUniverse;
 public enum MDShapeSample implements IMDSample {
 
     CROSS {
+
         public String getTitle() {
             return "Cross";
         }
 
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
+        }
+        
+        
         public IMDUniverse getUniverse(int dim, double radius, int M) {
             return getUniverse(dim, new MDCross(dim, radius));
         }
     },
     CUBE {
+
         public String getTitle() {
             return "Cube";
+        }
+        
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
         }
 
         public IMDUniverse getUniverse(int dim, double radius, int M) {
@@ -38,20 +51,26 @@ public enum MDShapeSample implements IMDSample {
         }
     },
     SPHERE {
+
         public String getTitle() {
             return "Sphere";
+        }
+        
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
         }
 
         public IMDUniverse getUniverse(int dim, double radius, int M) {
             return getUniverse(dim, new MDSphere(dim, radius, M));
         }
     };
-    static final int d = 100;
+    private static final int d = 100;
+    private static final int[] DIMENSIONS = {2, 3, 4, 5, 6, 7, 8};
 
     static IMDUniverse getUniverse(int dim, IMDShape shape) {
 
         return new MDUniverse(shape);
 
     }
-
 }

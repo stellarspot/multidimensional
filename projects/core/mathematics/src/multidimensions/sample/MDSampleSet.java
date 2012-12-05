@@ -4,6 +4,7 @@
  */
 package multidimensions.sample;
 
+import multidimensions.mathematics.IMDTransform;
 import multidimensions.mathematics.MDAxesRotation;
 import multidimensions.shape.IMDAnimation;
 import multidimensions.shape.IMDUniverse;
@@ -15,49 +16,29 @@ import multidimensions.shape.camera.IMDCamera;
  */
 public class MDSampleSet {
 
-    private int maxDimension;
-    private int dimension = 2;
-    private IMDSample[] samples;
+    private static double RADIUS = 200;
+    private static int M = 16;
+    final double DELTA_ANGLE = 0.5 * 2 * Math.PI / 360;
+    //private int maxDimension;
+    //private int dimensionIndex = 2;
+    //private IMDSample[] samples;
     // sample, dimension
-    private IMDUniverse[][] universes;
+    //private IMDUniverse[][] universes;
     private int sampleIndex = 0;
-    private double radius = 100;
-    private int M = 4;
     private IMDCamera camera;
     private double angle;
-    private double deltaAngle = 0.5 * Math.PI / 90;
     // dimension, rotations
     private MDAxesRotation[][] rotations;
+    private SetSample[] setSamples;
 
-    public MDSampleSet(int maxDimension, IMDCamera camera, IMDSample... samples) {
-        this.maxDimension = maxDimension;
-        this.samples = samples;
-        universes = new IMDUniverse[samples.length][maxDimension];
+    public MDSampleSet(IMDCamera camera, IMDSample... samples) {
+        //this.samples = samples;
         this.camera = camera;
 
-        rotations = new MDAxesRotation[maxDimension][];
-
-        for (int dim = 0; dim < maxDimension; dim++) {
-            rotations[dim] = MDAxesRotation.getRotations(dim);
+        setSamples = new SetSample[samples.length];
+        for (int i = 0; i < samples.length; i++) {
+            setSamples[i] = new SetSample(samples[i]);
         }
-
-        initUniverse();
-    }
-
-    public int getMaxDimension() {
-        return maxDimension;
-    }
-
-    public IMDUniverse getUniverse() {
-
-
-        IMDUniverse universe = universes[sampleIndex][dimension];
-        if (universe == null) {
-            initUniverse();
-            universe = universes[sampleIndex][dimension];
-        }
-        return universe;
-
 
     }
 
@@ -65,14 +46,13 @@ public class MDSampleSet {
         this.sampleIndex = sampleIndex;
     }
 
-    public double getRadius() {
-        return radius;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
+//    public double getRadius() {
+//        return radius;
+//    }
+//
+//    public void setRadius(double radius) {
+//        this.radius = radius;
+//    }
     public int getM() {
         return M;
     }
@@ -81,43 +61,117 @@ public class MDSampleSet {
         this.M = M;
     }
 
-    public int getDimension() {
-        return dimension;
+    public int getDimensionIndex() {
+        return getSetSample().dimensionIndex;
     }
 
-    public void setDimension(int dimension) {
-        this.dimension = dimension;
+    //public int getCurrentDimensionIndex
+    public void setDimensionIndex(int index) {
+        getSetSample().setDimensionIndex(index);
     }
 
-//    public void setCamera(IMDCamera camera) {
-//        this.camera = camera;
-//    }
+    public int[] getCurrentDimensions() {
+        return getSetSample().sample.getDimensions();
+    }
+
     public void reset() {
     }
 
-    private void initUniverse() {
-        IMDUniverse universe = universes[sampleIndex][dimension];
+    public void evaluate() {
+        getSetSample().getUniverse().evaluate();
+    }
 
-        if (universe == null) {
-            universe = samples[sampleIndex].getUniverse(dimension, radius, M);
-            universe.getCameras().addLast(camera);
+//    private void initUniverse() {
+//        int[] dimensions = samples[sampleIndex].getDimensions();
+//
+//        IMDUniverse universe = universes[sampleIndex][dimensionIndex];
+//
+//        if (universe == null) {
+//            universe = samples[sampleIndex].getUniverse(dimensionIndex, radius, M);
+//            universe.getCameras().addLast(camera);
+//
+//            universe.getShape().getTransforms().addLast(rotations[dimensionIndex]);
+//
+//            System.out.println("dimensions: " + dimensions.length);
+//            //final MDAxesRotation[] r = rotations[dimensions.length];
+//            final MDAxesRotation[] r = MDAxesRotation.getRotations(M);
+//
+//            IMDAnimation animation = new IMDAnimation() {
+//
+//                @Override
+//                public void animate() {
+//                    final double deltaAngle = 3.0 * 2 * Math.PI / 360;
+//                    angle += deltaAngle;
+//                    for (int i = 0; i < r.length; i++) {
+//                        r[i].setAngle(angle);
+//                    }
+//                }
+//            };
+//
+//            universe.getShape().getAnimations().addLast(animation);
+//            universes[sampleIndex][dimensionIndex] = universe;
+//        }
+//    }
+    private SetSample getSetSample() {
+        return setSamples[sampleIndex];
+    }
 
-            universe.getShape().getTransforms().addLast(rotations[dimension]);
+    class SetSample {
 
-            final MDAxesRotation[] r = rotations[dimension];
+        int dimensionIndex = 2;
+        IMDSample sample;
+        IMDUniverse[] universes;
+        IMDTransform[][] rotations;
 
-            IMDAnimation animation = new IMDAnimation() {
-                @Override
-                public void animate() {
-                    double deltaAngle = 0.7 * 2 * Math.PI / 360;
-                    for (int i = 0; i < r.length; i++) {
-                        r[i].addAngle(deltaAngle);
+        public SetSample(IMDSample sample) {
+            this.sample = sample;
+            int dimensions = sample.getDimensions().length;
+
+            universes = new IMDUniverse[dimensions];
+            rotations = new IMDTransform[dimensions][];
+        }
+
+        void setDimensionIndex(int dimensionIndex) {
+            System.out.println("set dimension index: " + dimensionIndex);
+            this.dimensionIndex = dimensionIndex;
+
+        }
+
+        IMDUniverse getUniverse() {
+            init();
+            return universes[dimensionIndex];
+        }
+
+        void init() {
+            if (universes[dimensionIndex] == null) {
+                int dimension = sample.getDimensions()[dimensionIndex];
+                System.out.println("Dimension: " + dimension);
+                IMDUniverse universe = sample.getUniverse(dimension, RADIUS, M);
+                universe.getCameras().addLast(camera);
+
+
+
+                //System.out.println("dimensions: " + dimensions.length);
+                //final MDAxesRotation[] r = rotations[dimensions.length];
+                final MDAxesRotation[] r = MDAxesRotation.getRotations(dimension);
+                rotations[dimensionIndex] = r;
+                universe.getShape().getTransforms().addLast(r);
+
+
+                IMDAnimation animation = new IMDAnimation() {
+                    @Override
+                    public void animate() {
+                        angle += DELTA_ANGLE;
+                        for (int i = 0; i < r.length; i++) {
+                            r[i].setAngle(angle);
+                        }
                     }
-                }
-            };
+                };
 
-            universe.getShape().getAnimations().addLast(animation);
-            universes[sampleIndex][dimension] = universe;
+                universe.getShape().getAnimations().addLast(animation);
+                universes[dimensionIndex] = universe;
+
+            }
         }
     }
 }

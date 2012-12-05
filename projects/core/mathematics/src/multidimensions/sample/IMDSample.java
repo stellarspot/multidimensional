@@ -13,5 +13,6 @@ import multidimensions.shape.IMDUniverse;
  */
 public interface IMDSample {
     String getTitle();
+    int[] getDimensions();
     IMDUniverse getUniverse(int dim, double radius, int M);
 }

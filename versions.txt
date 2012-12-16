@@ -1,5 +1,5 @@
--> puddle  0.1
--- pool
+-- puddle  0.1
+-> pool    0.5
 -- pond
 -- lake
 -- sea

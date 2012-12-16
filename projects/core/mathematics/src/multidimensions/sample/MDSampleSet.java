@@ -65,13 +65,17 @@ public class MDSampleSet {
         return getSetSample().dimensionIndex;
     }
 
-    //public int getCurrentDimensionIndex
-    public void setDimensionIndex(int index) {
-        getSetSample().setDimensionIndex(index);
+    public int getCurrentDimension() {
+        return getSetSample().getDimension();
     }
 
     public int[] getCurrentDimensions() {
         return getSetSample().sample.getDimensions();
+    }
+
+    //public int getCurrentDimensionIndex
+    public void setDimensionIndex(int index) {
+        getSetSample().setDimensionIndex(index);
     }
 
     public void reset() {
@@ -132,9 +136,13 @@ public class MDSampleSet {
         }
 
         void setDimensionIndex(int dimensionIndex) {
-            System.out.println("set dimension index: " + dimensionIndex);
-            this.dimensionIndex = dimensionIndex;
-
+            //System.out.println("set dimension index: " + dimensionIndex);
+            int[] dimensions = sample.getDimensions();
+            if (0 <= dimensionIndex && dimensionIndex < dimensions.length) {
+                this.dimensionIndex = dimensionIndex;
+            } else {
+                this.dimensionIndex = 0;
+            }
         }
 
         IMDUniverse getUniverse() {
@@ -142,10 +150,14 @@ public class MDSampleSet {
             return universes[dimensionIndex];
         }
 
+        int getDimension() {
+            return sample.getDimensions()[dimensionIndex];
+        }
+
         void init() {
             if (universes[dimensionIndex] == null) {
                 int dimension = sample.getDimensions()[dimensionIndex];
-                System.out.println("Dimension: " + dimension);
+                //System.out.println("Dimension: " + dimension);
                 IMDUniverse universe = sample.getUniverse(dimension, RADIUS, M);
                 universe.getCameras().addLast(camera);
 
@@ -159,6 +171,7 @@ public class MDSampleSet {
 
 
                 IMDAnimation animation = new IMDAnimation() {
+
                     @Override
                     public void animate() {
                         angle += DELTA_ANGLE;

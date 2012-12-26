@@ -42,7 +42,7 @@ public class MDAxesRotation implements IMDTransform {
 
     public IMDVector transform(IMDVector vector) {
 
-        double[] elems = vector.getElems();
+        double[] elems = vector.getElemsCopy();
 
         double x1 = elems[n];
         double y1 = elems[m];

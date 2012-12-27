@@ -27,7 +27,7 @@ public class MDCross extends MDShape{
             v1[i] = d;
             v2[i] = -d;
 
-            getSegments().addLast(new MDShapeSegment(new MDShapeVertex(v1), new MDShapeVertex(v2)));
+            getSegments().addTail(new MDShapeSegment(new MDShapeVertex(v1), new MDShapeVertex(v2)));
 
         }
 

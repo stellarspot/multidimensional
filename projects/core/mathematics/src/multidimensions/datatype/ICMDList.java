@@ -8,14 +8,15 @@ package multidimensions.datatype;
  *
  * @author stallarspot
  */
-public interface ICMDList<Type> extends IMDList<Type> {
+public interface ICMDList<Type> extends IMDBaseList<Type> {
 
-    void addFirst(Type... items);
-    void addLast(Type... items);
+    void addHead(Type... items);
+    void addTail(Type... items);
 
-    void addFirst(Iterable<Type> items);
-    void addLast(Iterable<Type> items);
-
-    //void clear();
+    void addHead(Iterable<Type> items);
+    void addTail(Iterable<Type> items);
+    
+    IMDList<Type> getIMDList();
+    
     void clear();
 }

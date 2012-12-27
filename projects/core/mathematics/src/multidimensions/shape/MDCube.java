@@ -52,7 +52,7 @@ public class MDCube extends MDShape {
                         counter[n] = -radius;
 
                     }
-                    pairs.addLast(new Pair(n2, n2 - (1 << n)));
+                    pairs.addTail(new Pair(n2, n2 - (1 << n)));
                 }
             }
         }
@@ -63,7 +63,7 @@ public class MDCube extends MDShape {
         }
 
         for (Pair pair : pairs) {
-            segments.addLast(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
+            segments.addTail(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
         }
 
     }

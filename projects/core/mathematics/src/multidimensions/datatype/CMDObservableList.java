@@ -13,20 +13,20 @@ public class CMDObservableList<Type> extends CMDList<Type> implements ICMDObserv
     ICMDList<IMDListListener<Type>> listeners = new CMDList<IMDListListener<Type>>();
 
     public void addListeners(IMDListListener<Type>... listeners) {
-        this.listeners.addLast(listeners);
+        this.listeners.addTail(listeners);
     }
 
     @Override
-    protected void addFirst(Type item) {
-        super.addFirst(item);
+    protected void addHead(Type item) {
+        super.addHead(item);
         for (IMDListListener<Type> listener : listeners) {
             listener.add(item);
         }
     }
 
     @Override
-    protected void addLast(Type item) {
-        super.addLast(item);
+    protected void addTail(Type item) {
+        super.addTail(item);
         for (IMDListListener<Type> listener : listeners) {
             listener.add(item);
         }

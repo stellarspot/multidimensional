@@ -66,9 +66,9 @@ public class MDSphere extends MDShape {
             //System.out.println("counter: " + toString(counter));
             for (int n = 0; n < N; n++) {
                 if (counter[n] == 0) {
-                    pairs.addLast(new Pair(n2, n2 + forward[n]));
+                    pairs.addTail(new Pair(n2, n2 + forward[n]));
                 } else {
-                    pairs.addLast(new Pair(n2, n2 - back[n]));
+                    pairs.addTail(new Pair(n2, n2 - back[n]));
                 }
 
             }
@@ -104,7 +104,7 @@ public class MDSphere extends MDShape {
 //            System.out.println("vertex1: " + vertices[pair.index1]);
 //            System.out.println("vertex2: " + vertices[pair.index2]);
 //            System.out.println("");
-            segments.addLast(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
+            segments.addTail(new MDShapeSegment(vertices[pair.index1], vertices[pair.index2]));
         }
 
     }

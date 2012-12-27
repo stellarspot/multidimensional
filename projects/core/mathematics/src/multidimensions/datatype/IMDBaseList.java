@@ -8,5 +8,10 @@ package multidimensions.datatype;
  *
  * @author stellarspot
  */
-public interface IMDList<Type> extends IMDBaseList<Type> {
+public interface IMDBaseList<Type> extends Iterable<Type> {
+
+    boolean isEmpty();
+    int getSize();
+
+    void iterate(IMDIterator<Type> iterator);
 }

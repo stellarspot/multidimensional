@@ -51,7 +51,7 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
 
         for (SegmentCarcass segment : segments) {
             //System.out.println("fill segment: " + segment);
-            elements.segments.addLast(segment.getCameraSegment());
+            elements.segments.addTail(segment.getCameraSegment());
         }
 
         return elements;
@@ -99,7 +99,7 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
         VertexCarcass vertex2 = verticesMap.get(segment.getVertex2());
 
         SegmentCarcass segmentCarcass = new SegmentCarcass(segment, vertex1, vertex2);
-        segments.addLast(segmentCarcass);
+        segments.addTail(segmentCarcass);
 
 
     }
@@ -198,7 +198,7 @@ public class MDUniverseCarcas implements IMDUniverseCarcass {
         CMDList<IMDCameraSegment> segments = new CMDList<IMDCameraSegment>();
 
         public IMDList<IMDCameraSegment> getSegments() {
-            return segments;
+            return segments.getIMDList();
         }
     }
 }

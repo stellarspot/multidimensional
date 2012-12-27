@@ -12,25 +12,42 @@ import java.util.Iterator;
  */
 public class MDList<Type> implements IMDList<Type> {
 
-    protected int size;
-    protected MDListElement<Type> first;
-    protected MDListElement<Type> last;
+    protected final int size;
+    protected MDListElement<Type> head;
 
     public MDList(Type... items) {
+        int size = 0;
+        MDListElement<Type> elem = null;
         for (Type item : items) {
-            addLast(item);
+            if (head == null) {
+                head = (elem = new MDListElement<Type>(item, null));
+            } else {
+                elem.next = new MDListElement<Type>(item, null);
+                elem = elem.next;
+            }
+            size++;
         }
+        this.size = size;
     }
-    
+
     public MDList(Iterable<Type> items) {
+        int size = 0;
+        MDListElement<Type> elem = null;
         for (Type item : items) {
-            addLast(item);
+            if (head == null) {
+                head = (elem = new MDListElement<Type>(item, null));
+            } else {
+                elem.next = new MDListElement<Type>(item, null);
+                elem = elem.next;
+            }
+            size++;
         }
+        this.size = size;
     }
-    
+
     @Override
     public boolean isEmpty() {
-        return first == null;
+        return head == null;
     }
 
     @Override
@@ -38,27 +55,8 @@ public class MDList<Type> implements IMDList<Type> {
         return size;
     }
 
-    protected void addFirst(Type item) {
-        if (first == null) {
-            first = (last = new MDListElement<Type>(item, null));
-        } else {
-            first = new MDListElement<Type>(item, first.next);
-        }
-        size++;
-    }
-
-    protected void addLast(Type item) {
-        if (last == null) {
-            first = (last = new MDListElement<Type>(item, null));
-        } else {
-            last.next = new MDListElement<Type>(item, null);
-            last = last.next;
-        }
-        size++;
-    }
-
     public void iterate(IMDIterator<Type> iterator) {
-        MDListElement<Type> elem = first;
+        MDListElement<Type> elem = head;
         while (elem != null) {
             iterator.iterate(elem.value);
             elem = elem.next;
@@ -67,7 +65,7 @@ public class MDList<Type> implements IMDList<Type> {
 
     public void show() {
 
-        MDListElement<Type> elem = first;
+        MDListElement<Type> elem = head;
         while (elem != null) {
             System.out.println("Type: " + elem.value);
             elem = elem.next;
@@ -76,8 +74,7 @@ public class MDList<Type> implements IMDList<Type> {
 
     public Iterator<Type> iterator() {
         return new Iterator<Type>() {
-
-            MDListElement<Type> item = first;
+            MDListElement<Type> item = head;
 
             public boolean hasNext() {
                 return item != null;

@@ -159,7 +159,7 @@ public class MDSampleSet {
                 int dimension = sample.getDimensions()[dimensionIndex];
                 //System.out.println("Dimension: " + dimension);
                 IMDUniverse universe = sample.getUniverse(dimension, RADIUS, M);
-                universe.getCameras().addLast(camera);
+                universe.getCameras().addTail(camera);
 
 
 
@@ -167,7 +167,7 @@ public class MDSampleSet {
                 //final MDAxesRotation[] r = rotations[dimensions.length];
                 final MDAxesRotation[] r = MDAxesRotation.getRotations(dimension);
                 rotations[dimensionIndex] = r;
-                universe.getShape().getTransforms().addLast(r);
+                universe.getShape().getTransforms().addTail(r);
 
 
                 IMDAnimation animation = new IMDAnimation() {
@@ -181,7 +181,7 @@ public class MDSampleSet {
                     }
                 };
 
-                universe.getShape().getAnimations().addLast(animation);
+                universe.getShape().getAnimations().addTail(animation);
                 universes[dimensionIndex] = universe;
 
             }

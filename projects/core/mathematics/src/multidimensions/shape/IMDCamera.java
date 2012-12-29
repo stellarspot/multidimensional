@@ -1,9 +1,10 @@
-package multidimensions.shape.camera;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package multidimensions.shape;
+
+import multidimensions.datatype.IMDList;
 
 /**
  *
@@ -11,5 +12,5 @@ package multidimensions.shape.camera;
  */
 public interface IMDCamera {
 
-    void draw(IMDCameraElements elements);
+    void draw(IMDList<IMDCameraElem> elems);
 }

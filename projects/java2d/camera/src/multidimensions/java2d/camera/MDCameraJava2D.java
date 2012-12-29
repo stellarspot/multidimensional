@@ -8,10 +8,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import multidimensions.datatype.IMDList;
 import multidimensions.mathematics.IMDVector;
-import multidimensions.shape.camera.IMDCamera;
-import multidimensions.shape.camera.IMDCameraElements;
-import multidimensions.shape.camera.IMDCameraSegment;
+import multidimensions.shape.IMDCamera;
+import multidimensions.shape.IMDCameraElem;
 
 /**
  *
@@ -19,19 +19,19 @@ import multidimensions.shape.camera.IMDCameraSegment;
  */
 public class MDCameraJava2D implements IMDCamera {
 
-    IMDCameraElements elements;
+    IMDList<IMDCameraElem> elems;
     CameraCanvas canvas = new CameraCanvas();
     private volatile boolean isPainted = false;
 
     @Override
-    public void draw(final IMDCameraElements elements) {
+    public void draw(final IMDList<IMDCameraElem> elems) {
 
         if (!isPainted) {
             isPainted = true;
             SwingUtilities.invokeLater(new Runnable() {
 
                 public void run() {
-                    MDCameraJava2D.this.elements = elements;
+                    MDCameraJava2D.this.elems = elems;
                     canvas.repaint();
                 }
             });
@@ -49,7 +49,7 @@ public class MDCameraJava2D implements IMDCamera {
             try {
 
 
-                if (elements == null) {
+                if (elems == null) {
                     return;
                 }
 
@@ -57,24 +57,35 @@ public class MDCameraJava2D implements IMDCamera {
                 Graphics2D g2 = (Graphics2D) g;
 
                 g2.translate(MDFrameJava2D.WIDTH / 2, MDFrameJava2D.HEIGHT / 2);
+                //g2.translate(200 / 2, 200 / 2);
                 g2.scale(1, -1);
 
                 //g2.drawOval(-100, -100, 200, 200);
 
-                for (IMDCameraSegment segment : elements.getSegments()) {
+                for (IMDCameraElem elem: elems) {
                     //System.out.println("[] camera segment: " + segment);
-                    drawSegment(g2, segment);
+                    drawElem(g2, elem);
                 }
 
             } finally {
                 isPainted = false;
             }
         }
+        void drawElem(Graphics2D g, IMDCameraElem elem) {
 
-        void drawSegment(Graphics2D g, IMDCameraSegment segment) {
+            IMDVector[] vertices = elem.getVertices();
 
-            IMDVector v1 = segment.getVertex1().getCordinats();
-            IMDVector v2 = segment.getVertex2().getCordinats();
+            for(IMDCameraElem.Segment segment: elem.getSegments()){
+                drawSegment(g, segment, vertices);
+            }
+        }
+
+        void drawSegment(Graphics2D g, IMDCameraElem.Segment segment, IMDVector[] vertices) {
+
+            IMDVector v1 = vertices[segment.getVertex1()];
+            IMDVector v2 = vertices[segment.getVertex2()];
+
+            //System.out.println("segment: " + v1 + ", " + v2);
 
             int x1 = (int) v1.getElem(0);
             int y1 = v1.getDim() < 2 ? 0 : (int) v1.getElem(1);

@@ -6,6 +6,7 @@ package multidimensions.shape;
 
 import multidimensions.datatype.ICMDObservableList;
 import multidimensions.mathematics.IMDTransform;
+import multidimensions.shape.IMDAnimation;
 
 /**
  *
@@ -14,7 +15,9 @@ import multidimensions.mathematics.IMDTransform;
 public interface IMDShape {
 
     ICMDObservableList<IMDShape> getShapes();
-    ICMDObservableList<IMDShapeSegment> getSegments();
+    ICMDObservableList<IMDShapeElem> getElems();
+
     ICMDObservableList<IMDTransform> getTransforms();
     ICMDObservableList<IMDAnimation> getAnimations();
+
 }

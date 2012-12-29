@@ -4,8 +4,8 @@
  */
 package multidimensions.java2d.sample;
 
-import multidimensions.sample.MDShapeSample;
 import multidimensions.java2d.camera.MDFrameJava2D;
+import multidimensions.sample.MDShapeSample;
 
 /**
  *

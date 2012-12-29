@@ -7,8 +7,8 @@ package multidimensions.sample;
 import multidimensions.mathematics.IMDTransform;
 import multidimensions.mathematics.MDAxesRotation;
 import multidimensions.shape.IMDAnimation;
+import multidimensions.shape.IMDCamera;
 import multidimensions.shape.IMDUniverse;
-import multidimensions.shape.camera.IMDCamera;
 
 /**
  *

@@ -6,8 +6,6 @@ package multidimensions.java2d.camera;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
 import multidimensions.sample.*;
@@ -101,7 +99,7 @@ public class MDFrameJava2D extends JFrame {
         mainPanel.add(listPanel, BorderLayout.WEST);
         mainPanel.add(camera.canvas, BorderLayout.CENTER);
         mainPanel.add(status, BorderLayout.SOUTH);
-        
+
 
         camera.canvas.addKeyListener(new KeyAdapter() {
 

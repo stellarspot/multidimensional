@@ -9,6 +9,7 @@ import multidimensions.shape.IMDShapeElem;
 import multidimensions.shape.IMDUniverse;
 import multidimensions.shape.MDCrossElem;
 import multidimensions.shape.MDShape;
+import multidimensions.shape.MDSphereElem;
 import multidimensions.shape.MDUniverse;
 
 /**
@@ -32,7 +33,7 @@ public enum MDShapeSample implements IMDSample {
         public IMDUniverse getUniverse(int dim, double radius, int M) {
             return getUniverse(dim, new MDCrossElem(dim, radius));
         }
-    };
+    },
 //    CUBE {
 //
 //        public String getTitle() {
@@ -48,21 +49,21 @@ public enum MDShapeSample implements IMDSample {
 //            return getUniverse(dim, new MDCube(dim, radius));
 //        }
 //    },
-//    SPHERE {
-//
-//        public String getTitle() {
-//            return "Sphere";
-//        }
-//
-//        @Override
-//        public int[] getDimensions() {
-//            return DIMENSIONS;
-//        }
-//
-//        public IMDUniverse getUniverse(int dim, double radius, int M) {
-//            return getUniverse(dim, new MDSphere(dim, radius, M));
-//        }
-//    };
+    SPHERE {
+
+        public String getTitle() {
+            return "Sphere";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
+        }
+
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDSphereElem(dim, radius, M));
+        }
+    };
     private static final int d = 100;
     private static final int[] DIMENSIONS = {2, 3, 4, 5, 6, 7, 8};
 

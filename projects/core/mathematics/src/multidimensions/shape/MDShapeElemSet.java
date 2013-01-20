@@ -15,29 +15,53 @@ import multidimensions.datatype.ICMDList;
 public abstract class MDShapeElemSet implements IMDShapeElem {
 
     protected int dim;
-    protected int M;
+    //protected int M;
     protected double d;
     ICMDList<Segment> segments = new CMDList<Segment>();
     protected int[][] array;
-
     int[] grid;
 
     public MDShapeElemSet(int dim, double d, int M) {
+        this(dim, d, toGrid(dim, M));
+    }
+
+    public MDShapeElemSet(int dim, double d, int[] grid) {
         this.dim = dim;
         this.d = d;
-        this.M = M;
+        this.grid = grid;
         init();
+    }
+
+    static int[] toGrid(int dim, int M) {
+        int[] grid = new int[dim];
+        Arrays.fill(grid, M);
+        return grid;
+    }
+
+    protected int getMaxM(){
+        int M = 0;
+
+        for (int n = 0; n < dim; n++) {
+            if(M < grid[n]){
+                M = grid[n];
+            }
+        }
+        return M;
     }
 
     protected void init() {
         int N = dim;
         int NM = 1;
 
+        //int M1 = M - 1;
+        int[] M1 = new int[dim];
         for (int i = 0; i < N; i++) {
-            NM *= M;
+            //NM *= M;
+            NM *= grid[i];
+            M1[i] = grid[i] - 1;
         }
 
-        int M1 = M - 1;
+
 
         array = new int[NM][N];
         int[] counter = new int[N];
@@ -49,8 +73,10 @@ public abstract class MDShapeElemSet implements IMDShapeElem {
 
         for (int n = 0; n < N; n++) {
             back[n] = l;
-            forward[n] = l * M1;
-            l *= M;
+            //forward[n] = l * M1;
+            forward[n] = l * M1[n];
+            //l *= M;
+            l *= grid[n];
         }
 
 //        System.out.println("forward: " + toString(forward));
@@ -68,7 +94,7 @@ public abstract class MDShapeElemSet implements IMDShapeElem {
 
             }
             for (int n = 0; n < N; n++) {
-                if (counter[n] == M1) {
+                if (counter[n] == M1[n]) {
                     counter[n] = 0;
                 } else {
                     counter[n]++;
@@ -128,7 +154,6 @@ public abstract class MDShapeElemSet implements IMDShapeElem {
 //        }
 //
 //    }
-
     static String toString(int[] array) {
         String res = "[ ";
         for (int j = array.length - 1; 0 <= j; j--) {

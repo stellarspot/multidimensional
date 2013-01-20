@@ -45,7 +45,13 @@ public enum MDShapeSample implements IMDSample {
 
         public IMDUniverse getUniverse(int dim, double radius, int M) {
             //return getUniverse(dim, new MDGridElem(dim, radius, M));
-            return getUniverse(dim, new MDGridElem(dim, radius, 4));
+            int[] grid = new int[dim];
+            for (int i = 0; i < dim; i++) {
+                grid[i] = i+3;
+            }
+
+            //return getUniverse(dim, new MDGridElem(dim, radius, 4));
+            return getUniverse(dim, new MDGridElem(dim, radius, grid));
         }
     },
     //    CUBE {

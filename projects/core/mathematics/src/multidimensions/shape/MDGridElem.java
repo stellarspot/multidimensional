@@ -15,6 +15,10 @@ public class MDGridElem extends MDShapeElemSet {
 
     ICMDVector[] vertices;
 
+    public MDGridElem(int dim, double radius, int[] grid) {
+        super(dim, radius / grid[0], grid);
+    }
+
     public MDGridElem(int dim, double radius, int M) {
         super(dim, radius / M, M);
     }

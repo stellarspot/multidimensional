@@ -31,7 +31,7 @@ public class MDSphereElem extends MDShapeElemSet {
         //System.out.println("N: " + N);
         //System.out.println("NM: " + NM);
 
-        double delta = 2 * Math.PI / M;
+        double delta = 2 * Math.PI / getMaxM();
 
         for (int n2 = 0; n2 < NM; n2++) {
             double[] coordinats = new double[N];

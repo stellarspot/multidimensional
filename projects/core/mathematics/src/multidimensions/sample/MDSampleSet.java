@@ -24,7 +24,7 @@ public class MDSampleSet {
     //private IMDSample[] samples;
     // sample, dimension
     //private IMDUniverse[][] universes;
-    private int sampleIndex = 0;
+    private int sampleIndex = 1;
     private IMDCamera camera;
     private double angle;
     // dimension, rotations

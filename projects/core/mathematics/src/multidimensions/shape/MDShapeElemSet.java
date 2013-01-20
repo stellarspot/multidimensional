@@ -20,6 +20,8 @@ public abstract class MDShapeElemSet implements IMDShapeElem {
     ICMDList<Segment> segments = new CMDList<Segment>();
     protected int[][] array;
 
+    int[] grid;
+
     public MDShapeElemSet(int dim, double d, int M) {
         this.dim = dim;
         this.d = d;
@@ -76,6 +78,56 @@ public abstract class MDShapeElemSet implements IMDShapeElem {
         }
 
     }
+
+//    protected void init() {
+//        int N = dim;
+//        int NM = 1;
+//
+//        for (int i = 0; i < N; i++) {
+//            NM *= M;
+//        }
+//
+//        int M1 = M - 1;
+//
+//        array = new int[NM][N];
+//        int[] counter = new int[N];
+//        int[] back = new int[N];
+//        int[] forward = new int[N];
+//
+//
+//        int l = 1;
+//
+//        for (int n = 0; n < N; n++) {
+//            back[n] = l;
+//            forward[n] = l * M1;
+//            l *= M;
+//        }
+//
+////        System.out.println("forward: " + toString(forward));
+////        System.out.println("back: " + toString(back));
+//
+//        for (int n2 = 0; n2 < NM; n2++) {
+//            array[n2] = Arrays.copyOf(counter, N);
+//            //System.out.println("counter: " + toString(counter));
+//            for (int n = 0; n < N; n++) {
+//                if (counter[n] == 0) {
+//                    segments.addTail(new MDSegment(n2, n2 + forward[n]));
+//                } else {
+//                    segments.addTail(new MDSegment(n2, n2 - back[n]));
+//                }
+//
+//            }
+//            for (int n = 0; n < N; n++) {
+//                if (counter[n] == M1) {
+//                    counter[n] = 0;
+//                } else {
+//                    counter[n]++;
+//                    break;
+//                }
+//            }
+//        }
+//
+//    }
 
     static String toString(int[] array) {
         String res = "[ ";

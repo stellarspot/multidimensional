@@ -41,7 +41,7 @@ public class MDSphereElem extends MDShapeElemSet {
             }
 
             double[] res = new double[N + 1];
-            System.out.println("d: " + d);
+            //System.out.println("d: " + d);
             getSphereVector(d, coordinats, N, res);
             vertices[n2] = new CMDVector(res);
         }

@@ -46,6 +46,10 @@ public class MDSampleSet {
         this.sampleIndex = sampleIndex;
     }
 
+    public int getSampleIndex() {
+        return sampleIndex;
+    }
+
 //    public double getRadius() {
 //        return radius;
 //    }
@@ -171,7 +175,6 @@ public class MDSampleSet {
 
 
                 IMDAnimation animation = new IMDAnimation() {
-
                     @Override
                     public void animate() {
                         angle += DELTA_ANGLE;

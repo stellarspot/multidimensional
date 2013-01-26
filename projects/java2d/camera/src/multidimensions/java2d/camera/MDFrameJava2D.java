@@ -76,7 +76,7 @@ public class MDFrameJava2D extends JFrame {
 
         final JList sampleList = new JList(categoriesModel);
         sampleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        sampleList.setSelectedIndex(0);
+        sampleList.setSelectedIndex(sampleSet.getSampleIndex());
         sampleList.addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {

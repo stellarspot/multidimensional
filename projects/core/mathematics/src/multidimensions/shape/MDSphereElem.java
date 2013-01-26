@@ -4,6 +4,8 @@
  */
 package multidimensions.shape;
 
+import multidimensions.datatype.CMDList;
+import multidimensions.datatype.ICMDList;
 import multidimensions.mathematics.CMDVector;
 import multidimensions.mathematics.ICMDVector;
 
@@ -11,19 +13,19 @@ import multidimensions.mathematics.ICMDVector;
  *
  * @author stellarspot
  */
-public class MDSphereElem extends MDShapeElemSet {
+//public class MDSphereElem extends MDShapeElemSet {
+public class MDSphereElem implements IMDShapeElem {
 
     ICMDVector[] vertices;
+    ICMDList<Segment> segments = new CMDList<Segment>();
 
     public MDSphereElem(int dim, double radius, int M) {
-        super(dim - 1, radius, M);
-    }
+        //super(dim - 1, radius, M);
+        int[] grid = MDGridElem.toGrid(dim - 1, M);
+        int[][] array = MDGridElem.getGrid(dim - 1, grid, segments);
 
-    @Override
-    protected void init() {
-        super.init();
 
-        int N = dim;
+        int N = dim-1;
         int NM = array.length;
 
         vertices = new ICMDVector[NM];
@@ -31,7 +33,7 @@ public class MDSphereElem extends MDShapeElemSet {
         //System.out.println("N: " + N);
         //System.out.println("NM: " + NM);
 
-        double delta = 2 * Math.PI / getMaxM();
+        double delta = 2 * Math.PI / MDGridElem.getMaxM(grid);
 
         for (int n2 = 0; n2 < NM; n2++) {
             double[] coordinats = new double[N];
@@ -42,7 +44,8 @@ public class MDSphereElem extends MDShapeElemSet {
 
             double[] res = new double[N + 1];
             //System.out.println("d: " + d);
-            getSphereVector(d, coordinats, N, res);
+            //getSphereVector(d, coordinats, N, res);
+            getSphereVector(radius, coordinats, N, res);
             vertices[n2] = new CMDVector(res);
         }
 
@@ -62,5 +65,10 @@ public class MDSphereElem extends MDShapeElemSet {
     @Override
     public ICMDVector[] getVertices() {
         return vertices;
+    }
+
+    @Override
+    public ICMDList<Segment> getSegments() {
+        return segments;
     }
 }

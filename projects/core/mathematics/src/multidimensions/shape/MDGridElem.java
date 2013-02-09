@@ -20,7 +20,7 @@ public class MDGridElem implements IMDShapeElem {
     ICMDList<Segment> segments = new CMDList<Segment>();
 
     public MDGridElem(int dim, double radius, int M) {
-        this(dim, radius / M, toGrid(dim, M));
+        this(dim, radius / M, toCells(dim, M));
     }
 
     public MDGridElem(int dim, double radius, int[] grid) {
@@ -92,7 +92,7 @@ public class MDGridElem implements IMDShapeElem {
         return M;
     }
 
-    public static int[] toGrid(int dim, int M) {
+    public static int[] toCells(int dim, int M) {
         int[] grid = new int[dim];
         Arrays.fill(grid, M);
         return grid;

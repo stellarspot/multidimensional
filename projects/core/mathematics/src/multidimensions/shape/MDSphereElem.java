@@ -21,7 +21,7 @@ public class MDSphereElem implements IMDShapeElem {
 
     public MDSphereElem(int dim, double radius, int M) {
         //super(dim - 1, radius, M);
-        int[] grid = MDGridElem.toGrid(dim - 1, M);
+        int[] grid = MDGridElem.toCells(dim - 1, M);
         int[][] array = MDGridElem.getGrid(dim - 1, grid, segments);
 
 

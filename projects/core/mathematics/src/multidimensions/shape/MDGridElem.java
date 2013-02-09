@@ -24,21 +24,29 @@ public class MDGridElem implements IMDShapeElem {
     }
 
     public MDGridElem(int dim, double radius, int[] grid) {
-        //super(dim, radius / grid[0], grid);
 
         int[][] array = getGrid(dim, grid, segments);
-
 
         int N = dim;
         int NM = array.length;
 
         double d = radius / getMaxM(grid);
+        //System.out.println("radius: " + radius + ", d: " + d);
+
+        double[] centers = new double[N];
+        for (int i = 0; i < N; i++) {
+           //centers[i] = (grid[i] - 1) * d / 2;
+            centers[i] = grid[i] * d / 2;
+            //System.out.println("i: " + i + ", grid: " + grid[i] + ", center: " + centers[i]);
+
+        }
+
         vertices = new ICMDVector[NM];
         for (int n2 = 0; n2 < NM; n2++) {
             double[] coordinats = new double[N];
 
             for (int i = 0; i < N; i++) {
-                coordinats[i] = d * array[n2][i]; // TODO
+                coordinats[i] = d * array[n2][i] - centers[i]; // TODO
             }
 
             vertices[n2] = new CMDVector(coordinats);
@@ -90,9 +98,16 @@ public class MDGridElem implements IMDShapeElem {
         return grid;
     }
 
-    public static int[][] getGrid(int dim, int[] grid, ICMDList<Segment> segments) {
+    public static int[][] getGrid(int dim, int[] cells, ICMDList<Segment> segments) {
         int N = dim;
         int NM = 1;
+
+
+        int[] grid = new int[cells.length];
+        for (int i = 0; i < cells.length; i++) {
+            grid[i] = cells[i] + 1;
+        }
+
 
         //int M1 = M - 1;
         int[] M1 = new int[dim];

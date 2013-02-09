@@ -16,7 +16,7 @@ import multidimensions.shape.IMDUniverse;
  */
 public class MDSampleSet {
 
-    private static double RADIUS = 350;
+    private static double RADIUS = 300;
     private static int M = 18;
     final double DELTA_ANGLE = 0.5 * 2 * Math.PI / 360;
     //private int maxDimension;

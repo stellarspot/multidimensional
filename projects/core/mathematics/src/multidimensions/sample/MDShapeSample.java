@@ -33,6 +33,20 @@ public enum MDShapeSample implements IMDSample {
             return getUniverse(dim, new MDCrossElem(dim, radius));
         }
     },
+    CUBE {
+        public String getTitle() {
+            return "Cube";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
+        }
+
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDGridElem(dim, radius, 1));
+        }
+    },
     GRID {
         public String getTitle() {
             return "GRID";
@@ -47,28 +61,11 @@ public enum MDShapeSample implements IMDSample {
             //return getUniverse(dim, new MDGridElem(dim, radius, M));
             int[] grid = new int[dim];
             for (int i = 0; i < dim; i++) {
-                grid[i] = i+3;
+                grid[i] = i + 1;
             }
-
-            //return getUniverse(dim, new MDGridElem(dim, radius, 4));
             return getUniverse(dim, new MDGridElem(dim, radius, grid));
         }
     },
-    //    CUBE {
-    //
-    //        public String getTitle() {
-    //            return "Cube";
-    //        }
-    //
-    //        @Override
-    //        public int[] getDimensions() {
-    //            return DIMENSIONS;
-    //        }
-    //
-    //        public IMDUniverse getUniverse(int dim, double radius, int M) {
-    //            return getUniverse(dim, new MDCube(dim, radius));
-    //        }
-    //    },
     SPHERE {
         public String getTitle() {
             return "Sphere";

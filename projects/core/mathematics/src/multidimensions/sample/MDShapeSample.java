@@ -11,6 +11,7 @@ import multidimensions.shape.MDCrossElem;
 import multidimensions.shape.MDGridElem;
 import multidimensions.shape.MDShape;
 import multidimensions.shape.MDSphereElem;
+import multidimensions.shape.MDTetrahedronElem;
 import multidimensions.shape.MDUniverse;
 
 /**
@@ -49,7 +50,7 @@ public enum MDShapeSample implements IMDSample {
     },
     GRID {
         public String getTitle() {
-            return "GRID";
+            return "Grid";
         }
 
         @Override
@@ -64,6 +65,20 @@ public enum MDShapeSample implements IMDSample {
                 grid[i] = i + 1;
             }
             return getUniverse(dim, new MDGridElem(dim, radius, grid));
+        }
+    },
+    TETRAHEDRON {
+        public String getTitle() {
+            return "Tetrahedron";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return DIMENSIONS;
+        }
+
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+            return getUniverse(dim, new MDTetrahedronElem(dim, radius));
         }
     },
     SPHERE {
@@ -89,5 +104,10 @@ public enum MDShapeSample implements IMDSample {
 
     static IMDUniverse getUniverse(int dim, IMDShape shape) {
         return new MDUniverse(shape);
+    }
+
+    @Override
+    public String toString() {
+        return getTitle();
     }
 }

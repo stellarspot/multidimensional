@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package multidimensions.opengl.camera;
+package multidimensions.jogl.camera;
 
-import com.jogamp.opengl.util.FPSAnimator;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
+import javax.swing.SwingUtilities;
 import multidimensions.datatype.IMDList;
+import multidimensions.java2d.camera.IMDSwingCamera;
 import multidimensions.mathematics.IMDVector;
-import multidimensions.shape.IMDCamera;
 import multidimensions.shape.IMDCameraElem;
 import multidimensions.shape.IMDCameraElem.Segment;
 
@@ -17,46 +17,38 @@ import multidimensions.shape.IMDCameraElem.Segment;
  *
  * @author stellarspot
  */
-public class MDCameraOpenGL implements IMDCamera {
+public class MDCameraJOGL implements IMDSwingCamera {
 
     private GLCanvas canvas;
-    IMDList<IMDCameraElem> elems;
+    private IMDList<IMDCameraElem> elems;
     private volatile boolean isPainted = false;
 
-    public MDCameraOpenGL() {
+    public MDCameraJOGL() {
         GLProfile glp = GLProfile.getDefault();
         GLCapabilities caps = new GLCapabilities(glp);
-
         canvas = new GLCanvas(caps);
-
         canvas.addGLEventListener(new SimpleScene());
-
-//        FPSAnimator animator = new FPSAnimator(canvas, 60);
-//        animator.add(canvas);
-//        animator.start();
     }
 
-    public GLCanvas getCanvas() {
+    @Override
+    public GLCanvas getComponent() {
         return canvas;
     }
 
     @Override
-    public void draw(IMDList<IMDCameraElem> elems) {
-        //System.out.println("Draw elemes: " + elems.getSize());
-
+    public void draw(final IMDList<IMDCameraElem> elems) {
         if (!isPainted) {
             isPainted = true;
-            this.elems = elems;
-            canvas.repaint();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    MDCameraJOGL.this.elems = elems;
+                    canvas.repaint();
+                }
+            });
         }
-
     }
 
     class SimpleScene implements GLEventListener {
-
-        private double theta = 0;
-        private double s = 0;
-        private double c = 0;
 
         @Override
         public void display(GLAutoDrawable drawable) {
@@ -81,7 +73,6 @@ public class MDCameraOpenGL implements IMDCamera {
 
         private void render(GLAutoDrawable drawable) {
 
-
             isPainted = true;
 
             try {
@@ -90,15 +81,11 @@ public class MDCameraOpenGL implements IMDCamera {
                     return;
                 }
 
-
-                float scale = 0.004f;
+                float scale = 0.003f;
                 GL2 gl = drawable.getGL().getGL2();
 
                 gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-                //gl.glScalef(scale, scale, 1);
-
                 gl.glBegin(GL.GL_LINES);
-
 
                 for (IMDCameraElem elem : elems) {
                     IMDVector[] vertices = elem.getVertices();
@@ -106,12 +93,6 @@ public class MDCameraOpenGL implements IMDCamera {
                         IMDVector v1 = vertices[segment.getVertex1()];
                         IMDVector v2 = vertices[segment.getVertex2()];
 
-                        //System.out.println("segment: " + v1 + ", " + v2);
-
-//                        int x1 = (int) v1.getElem(0);
-//                        int y1 = v1.getDim() < 2 ? 0 : (int) v1.getElem(1);
-//                        int x2 = (int) v2.getElem(0);
-//                        int y2 = v1.getDim() < 2 ? 0 : (int) v2.getElem(1);
                         double x1 = v1.getElem(0);
                         double y1 = v1.getDim() < 2 ? 0 : v1.getElem(1);
                         double x2 = v2.getElem(0);

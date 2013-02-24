@@ -18,7 +18,7 @@ import multidimensions.shape.MDUniverse;
  *
  * @author stellarspot
  */
-public enum MDShapeSample implements IMDSample {
+public enum MDShapeSample implements IMDShapeSample {
 
     CROSS {
         public String getTitle() {

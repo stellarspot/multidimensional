@@ -4,23 +4,23 @@
  */
 package multidimensions.java2d.camera;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import multidimensions.datatype.IMDList;
 import multidimensions.mathematics.IMDVector;
-import multidimensions.shape.IMDCamera;
 import multidimensions.shape.IMDCameraElem;
 
 /**
  *
  * @author stellarspot
  */
-public class MDCameraJava2D implements IMDCamera {
+public class MDCameraJava2D implements IMDSwingCamera {
 
     IMDList<IMDCameraElem> elems;
-    CameraCanvas canvas = new CameraCanvas();
+    private CameraCanvas canvas = new CameraCanvas();
     private volatile boolean isPainted = false;
 
     @Override
@@ -29,7 +29,6 @@ public class MDCameraJava2D implements IMDCamera {
         if (!isPainted) {
             isPainted = true;
             SwingUtilities.invokeLater(new Runnable() {
-
                 public void run() {
                     MDCameraJava2D.this.elems = elems;
                     canvas.repaint();
@@ -38,7 +37,11 @@ public class MDCameraJava2D implements IMDCamera {
         }
     }
 
-    //class CameraCanvas extends Canvas {
+    @Override
+    public Component getComponent() {
+        return canvas;
+    }
+
     class CameraCanvas extends JComponent {
 
         @Override
@@ -47,23 +50,16 @@ public class MDCameraJava2D implements IMDCamera {
             isPainted = true;
 
             try {
-
-
                 if (elems == null) {
                     return;
                 }
 
-
                 Graphics2D g2 = (Graphics2D) g;
 
                 g2.translate(MDFrameJava2D.WIDTH / 2, MDFrameJava2D.HEIGHT / 2);
-                //g2.translate(200 / 2, 200 / 2);
                 g2.scale(1, -1);
 
-                //g2.drawOval(-100, -100, 200, 200);
-
-                for (IMDCameraElem elem: elems) {
-                    //System.out.println("[] camera segment: " + segment);
+                for (IMDCameraElem elem : elems) {
                     drawElem(g2, elem);
                 }
 
@@ -71,11 +67,12 @@ public class MDCameraJava2D implements IMDCamera {
                 isPainted = false;
             }
         }
+
         void drawElem(Graphics2D g, IMDCameraElem elem) {
 
             IMDVector[] vertices = elem.getVertices();
 
-            for(IMDCameraElem.Segment segment: elem.getSegments()){
+            for (IMDCameraElem.Segment segment : elem.getSegments()) {
                 drawSegment(g, segment, vertices);
             }
         }

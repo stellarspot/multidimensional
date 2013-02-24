@@ -11,7 +11,7 @@ import multidimensions.shape.IMDUniverse;
  *
  * @author stellarspot
  */
-public interface IMDSample {
+public interface IMDShapeSample {
     String getTitle();
     int[] getDimensions();
     IMDUniverse getUniverse(int dim, double radius, int M);

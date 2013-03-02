@@ -4,11 +4,16 @@
  */
 package multidimensions.sample;
 
+import multidimensions.mathematics.IMDBaseVector;
+import multidimensions.mathematics.IMDTransform;
+import multidimensions.mathematics.IMDVector;
+import multidimensions.mathematics.MDVector;
 import multidimensions.shape.IMDShape;
 import multidimensions.shape.IMDShapeElem;
 import multidimensions.shape.IMDUniverse;
 import multidimensions.shape.MDCrossElem;
 import multidimensions.shape.MDGridElem;
+import multidimensions.shape.MDPlotterElem;
 import multidimensions.shape.MDShape;
 import multidimensions.shape.MDSphereElem;
 import multidimensions.shape.MDTetrahedronElem;
@@ -93,6 +98,40 @@ public enum MDShapeSample implements IMDShapeSample {
 
         public IMDUniverse getUniverse(int dim, double radius, int M) {
             return getUniverse(dim, new MDSphereElem(dim, radius, M));
+        }
+    },
+    PLOTTER {
+        public String getTitle() {
+            return "Plotter";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return new int[]{3};
+        }
+
+        public IMDUniverse getUniverse(int dim, double radius, int M) {
+
+
+            MDGridElem grid = new MDGridElem(1, radius, M);
+
+            IMDTransform transform = new IMDTransform() {
+                final double r = 50;
+
+                @Override
+                public IMDVector transform(IMDBaseVector vector) {
+                    double s = vector.getElem(0);
+                    double x = r * Math.cos(s);
+                    double y = r * Math.sin(s);
+
+
+                    return new MDVector(x, y, s);
+
+                }
+            };
+
+            MDPlotterElem plotter = new MDPlotterElem(transform, grid);
+            return getUniverse(dim, plotter);
         }
     };
     private static final int d = 100;

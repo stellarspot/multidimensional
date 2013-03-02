@@ -10,5 +10,5 @@ package multidimensions.mathematics;
  * @author stellarspot
  */
 public interface IMDTransform {
-    IMDVector transform(IMDVector vector);
+    IMDVector transform(IMDBaseVector vector);
 }

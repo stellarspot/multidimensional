@@ -13,5 +13,7 @@ public interface IMDVector extends IMDBaseVector{
     IMDVector add(IMDVector v);
     IMDVector sub(IMDVector v);
     IMDVector mul(double a);
-    
+
+    ICMDVector getCVector();
+
 }

@@ -40,7 +40,7 @@ public class MDAxesRotation implements IMDTransform {
         setAngle(angle + deltaAngle);
     }
 
-    public IMDVector transform(IMDVector vector) {
+    public IMDVector transform(IMDBaseVector vector) {
 
         double[] elems = vector.getElemsCopy();
 

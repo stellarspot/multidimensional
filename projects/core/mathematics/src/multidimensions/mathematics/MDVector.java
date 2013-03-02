@@ -45,4 +45,10 @@ public final class MDVector extends AMDVector {
     public double getElem(int n) {
         return elems[n];
     }
+
+    @Override
+    public ICMDVector getCVector() {
+        return new CMDVector(elems.clone());
+    }
+
 }

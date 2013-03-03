@@ -20,25 +20,27 @@ public class MDGridElem implements IMDShapeElem {
     ICMDList<Segment> segments = new CMDList<Segment>();
 
     public MDGridElem(int dim, double radius, int M) {
-        this(dim, radius / M, toCells(dim, M));
+        this(dim, radius, toCells(dim, M));
     }
 
     public MDGridElem(int dim, double radius, int[] grid) {
+        this(dim, radius, grid, false);
+    }
 
-        int[][] array = getGrid(dim, grid, segments);
+    public MDGridElem(int dim, double radius, int[] grid, boolean circuit) {
+
+        int[][] array = getGrid(dim, grid, segments, circuit);
 
         int N = dim;
         int NM = array.length;
 
         double d = radius / getMaxM(grid);
+        //System.out.println("max M: " + getMaxM(grid));
         //System.out.println("radius: " + radius + ", d: " + d);
 
         double[] centers = new double[N];
         for (int i = 0; i < N; i++) {
-           //centers[i] = (grid[i] - 1) * d / 2;
             centers[i] = grid[i] * d / 2;
-            //System.out.println("i: " + i + ", grid: " + grid[i] + ", center: " + centers[i]);
-
         }
 
         vertices = new ICMDVector[NM];
@@ -53,24 +55,6 @@ public class MDGridElem implements IMDShapeElem {
         }
     }
 
-//    @Override
-//    protected void init() {
-//        super.init();
-//
-//        int N = dim;
-//        int NM = array.length;
-//
-//        vertices = new ICMDVector[NM];
-//        for (int n2 = 0; n2 < NM; n2++) {
-//            double[] coordinats = new double[N];
-//
-//            for (int i = 0; i < N; i++) {
-//                coordinats[i] = d * array[n2][i]; // TODO
-//            }
-//
-//            vertices[n2] = new CMDVector(coordinats);
-//        }
-//    }
     @Override
     public ICMDVector[] getVertices() {
         return vertices;
@@ -98,16 +82,14 @@ public class MDGridElem implements IMDShapeElem {
         return grid;
     }
 
-    public static int[][] getGrid(int dim, int[] cells, ICMDList<Segment> segments) {
+    public static int[][] getGrid(int dim, int[] cells, ICMDList<Segment> segments, boolean circuit) {
         int N = dim;
         int NM = 1;
-
 
         int[] grid = new int[cells.length];
         for (int i = 0; i < cells.length; i++) {
             grid[i] = cells[i] + 1;
         }
-
 
         //int M1 = M - 1;
         int[] M1 = new int[dim];
@@ -116,8 +98,6 @@ public class MDGridElem implements IMDShapeElem {
             NM *= grid[i];
             M1[i] = grid[i] - 1;
         }
-
-
 
         int[][] array = new int[NM][N];
         int[] counter = new int[N];
@@ -140,14 +120,12 @@ public class MDGridElem implements IMDShapeElem {
 
         for (int n2 = 0; n2 < NM; n2++) {
             array[n2] = Arrays.copyOf(counter, N);
-            //System.out.println("counter: " + toString(counter));
             for (int n = 0; n < N; n++) {
-                if (counter[n] == 0) {
-                    segments.addTail(new MDSegment(n2, n2 + forward[n]));
-                } else {
+                if (counter[n] != 0) {
                     segments.addTail(new MDSegment(n2, n2 - back[n]));
+                } else if (circuit) {
+                    segments.addTail(new MDSegment(n2, n2 + forward[n]));
                 }
-
             }
             for (int n = 0; n < N; n++) {
                 if (counter[n] == M1[n]) {
@@ -158,7 +136,6 @@ public class MDGridElem implements IMDShapeElem {
                 }
             }
         }
-
         return array;
     }
 

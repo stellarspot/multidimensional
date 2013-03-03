@@ -24,6 +24,7 @@ public class MDPlotterElem implements IMDShapeElem {
         this.transform = transform;
         this.set = set;
 
+        
         ICMDVector[] setVectors = set.getVertices();
         vertices = new ICMDVector[setVectors.length];
 

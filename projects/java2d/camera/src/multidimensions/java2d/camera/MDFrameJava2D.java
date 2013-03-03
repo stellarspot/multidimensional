@@ -23,7 +23,7 @@ public class MDFrameJava2D extends JFrame {
     public static final int HEIGHT = 800;
     private static final int DELAY = 25;
     private static final double DELTA_ANGLE = 0.5 * 2 * Math.PI / 360;
-    //private volatile MDSampleSet sampleSet;
+    private int dimension;
     private int dimensionIndex = 1;
     private double radius = 300;
     private int M = 16;
@@ -55,10 +55,10 @@ public class MDFrameJava2D extends JFrame {
 
     void updateSample() {
         IMDShapeSample sample = samples[sampleIndex];
-        System.out.println("dimensions: " + sample.getDimensions().length);
-        if (sample.getDimensions().length <= sampleIndex) {
-            dimensionIndex = sample.getDimensions().length - 1;
-        }
+//        System.out.println("dimensions: " + sample.getDimensions().length);
+//        if (sample.getDimensions().length <= sampleIndex) {
+//            dimensionIndex = sample.getDimensions().length - 1;
+//        }
         int dimension = sample.getDimensions()[dimensionIndex];
         universe = sample.getUniverse(dimension, radius, M);
         universe.getCameras().addTail(camera);
@@ -89,20 +89,13 @@ public class MDFrameJava2D extends JFrame {
         IMDShapeSample sample = samples[sampleIndex];
 
         final JComboBox dimensions = new JComboBox();
-        for (int i : sample.getDimensions()) {
-            dimensions.addItem(i);
-
-        }
-
-        dimensions.setSelectedIndex(dimensionIndex);
+        upateDimensions(sample, dimensions);
 
         dimensions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("selected: " + dimensions.getSelectedIndex());
                 int selectedIndex = dimensions.getSelectedIndex();
-                if (dimensionIndex != selectedIndex) {
+                if (dimensionIndex != selectedIndex && dimensions.isEnabled() && 0 <= selectedIndex) {
                     dimensionIndex = selectedIndex;
-                    //status.setText("dimension: " + sampleSet.getCurrentDimension());
                     updateSample();
                 }
             }
@@ -123,6 +116,8 @@ public class MDFrameJava2D extends JFrame {
                 int selectedIndex = sampleList.getSelectedIndex();
                 if (sampleIndex != selectedIndex) {
                     sampleIndex = selectedIndex;
+                    // update dimensions
+                    upateDimensions(samples[sampleIndex], dimensions);
                     updateSample();
                 }
             }
@@ -146,12 +141,36 @@ public class MDFrameJava2D extends JFrame {
                 //System.out.println("process key: '" + e.getKeyChar() + "'");
                 if (e.getKeyCode() == KeyEvent.VK_P) {
                     paused = !paused;
-                    status.setText(paused ? "Sample paused" : "Sample run");
+                    //status.setText(paused ? "Sample paused" : "Sample run");
                 }
             }
         });
 
         return mainPanel;
+    }
+
+    void upateDimensions(IMDShapeSample sample, JComboBox combobox) {
+        int[] dimensions = sample.getDimensions();
+
+        for (int i = 0; i < dimensions.length; i++) {
+            if (dimensions[i] == dimension) {
+                dimensionIndex = i;
+                break;
+            }
+        }
+
+        combobox.removeAllItems();
+        combobox.setEnabled(false);
+        for (int i : dimensions) {
+            combobox.addItem(i);
+        }
+
+//        if (dimensions.length <= dimensionIndex) {
+//            dimensionIndex = dimensions.length - 1;
+//        }
+        dimension = dimensions[dimensionIndex];
+        combobox.setSelectedIndex(dimensionIndex);
+        combobox.setEnabled(1 < dimensions.length);
     }
 
     void animate() {

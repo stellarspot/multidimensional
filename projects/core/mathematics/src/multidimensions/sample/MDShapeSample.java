@@ -100,9 +100,9 @@ public enum MDShapeSample implements IMDShapeSample {
             return getUniverse(dim, new MDSphereElem(dim, radius, M));
         }
     },
-    PLOTTER {
+    SPIRAL {
         public String getTitle() {
-            return "Plotter";
+            return "Spiral";
         }
 
         @Override
@@ -110,21 +110,22 @@ public enum MDShapeSample implements IMDShapeSample {
             return new int[]{3};
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
+        public IMDUniverse getUniverse(int dim, final double radius, int M) {
 
+            M = 500;
+            final double d = 2 * radius;
+            final double w = 8 * 2 * Math.PI / d;
 
-            MDGridElem grid = new MDGridElem(1, radius, M);
+            MDGridElem grid = new MDGridElem(1, d, M);
 
             IMDTransform transform = new IMDTransform() {
-                final double r = 50;
+                final double r = radius / 3;
 
                 @Override
                 public IMDVector transform(IMDBaseVector vector) {
                     double s = vector.getElem(0);
-                    double x = r * Math.cos(s);
-                    double y = r * Math.sin(s);
-
-
+                    double x = r * Math.cos(w * s);
+                    double y = r * Math.sin(w * s);
                     return new MDVector(x, y, s);
 
                 }

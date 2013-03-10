@@ -116,8 +116,6 @@ public enum MDShapeSample implements IMDShapeSample {
             final double d = 2 * radius;
             final double w = 8 * 2 * Math.PI / d;
 
-            MDGridElem grid = new MDGridElem(1, d, M);
-
             IMDTransform transform = new IMDTransform() {
                 final double r = radius / 3;
 
@@ -131,7 +129,42 @@ public enum MDShapeSample implements IMDShapeSample {
                 }
             };
 
-            MDPlotterElem plotter = new MDPlotterElem(transform, grid);
+            MDPlotterElem plotter = new MDPlotterElem(transform, new MDGridElem(1, d, M));
+            return getUniverse(dim, plotter);
+        }
+    },
+    HYPERBOLOID {
+        public String getTitle() {
+            return "Hyperboloid";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return new int[]{3};
+        }
+
+        public IMDUniverse getUniverse(int dim, final double radius, int M) {
+
+            M = 50;
+            final double d = radius / 100;
+
+            IMDTransform transform = new IMDTransform() {
+                final double a = radius / 3;
+                final double c = radius / 3;
+
+                @Override
+                public IMDVector transform(IMDBaseVector vector) {
+                    double angle = vector.getElem(0);
+                    double u = vector.getElem(1);
+                    double x = a * Math.cosh(u) * Math.cos(angle);
+                    double y = a * Math.cosh(u) * Math.sin(angle);
+                    double z = c * Math.sinh(u) ;
+
+                    return new MDVector(x, y, z);
+                }
+            };
+
+            MDPlotterElem plotter = new MDPlotterElem(transform, new MDGridElem(2, d, M));
             return getUniverse(dim, plotter);
         }
     };

@@ -23,6 +23,8 @@ public class MDFrameJava2D extends JFrame {
     public static final int HEIGHT = 800;
     private static final int DELAY = 25;
     private static final double DELTA_ANGLE = 0.5 * 2 * Math.PI / 360;
+    private static final double PLUS_ANGLE = DELTA_ANGLE / 15;
+    private double deltaAngle = DELTA_ANGLE;
     private int dimension;
     private int dimensionIndex = 1;
     private double radius = 300;
@@ -69,7 +71,7 @@ public class MDFrameJava2D extends JFrame {
         IMDAnimation animation = new IMDAnimation() {
             @Override
             public void animate() {
-                angle += DELTA_ANGLE;
+                angle += deltaAngle;
                 for (int i = 0; i < rotations.length; i++) {
                     rotations[i].setAngle(angle);
                 }
@@ -138,10 +140,20 @@ public class MDFrameJava2D extends JFrame {
         camera.getComponent().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                //System.out.println("process key: '" + e.getKeyChar() + "'");
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    paused = !paused;
-                    //status.setText(paused ? "Sample paused" : "Sample run");
+                //System.out.println("process key: '" + e.getKeyChar() + "'" + e.getKeyCode());
+
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_P:
+                        paused = !paused;
+                        break;
+                    case KeyEvent.VK_EQUALS:
+                        deltaAngle += PLUS_ANGLE;
+                        //System.out.println("delta angle: " + deltaAngle);
+                        break;
+                    case KeyEvent.VK_MINUS:
+                        deltaAngle -= PLUS_ANGLE;
+                        //System.out.println("delta angle: " + deltaAngle);
+                        break;
                 }
             }
         });

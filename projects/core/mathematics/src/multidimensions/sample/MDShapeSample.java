@@ -158,9 +158,43 @@ public enum MDShapeSample implements IMDShapeSample {
                     double u = vector.getElem(1);
                     double x = a * Math.cosh(u) * Math.cos(angle);
                     double y = a * Math.cosh(u) * Math.sin(angle);
-                    double z = c * Math.sinh(u) ;
+                    double z = c * Math.sinh(u);
 
                     return new MDVector(x, y, z);
+                }
+            };
+
+            MDPlotterElem plotter = new MDPlotterElem(transform, new MDGridElem(2, d, M));
+            return getUniverse(dim, plotter);
+        }
+    },
+    XY {
+        public String getTitle() {
+            return "XY";
+        }
+
+        @Override
+        public int[] getDimensions() {
+            return new int[]{3};
+        }
+
+        public IMDUniverse getUniverse(int dim, final double radius, int M) {
+
+            M = 100;
+            final double s = radius;
+            final double d = radius / s;
+            
+
+            IMDTransform transform = new IMDTransform() {
+                @Override
+                public IMDVector transform(IMDBaseVector vector) {
+                    double x = vector.getElem(0);
+                    double y = vector.getElem(1);
+                    double r2 = x * x + y * y;
+
+                    double z = (x * x - y * y) / (r2 * r2);
+
+                    return new MDVector(2 * s * x, 2 * s * y, z);
                 }
             };
 

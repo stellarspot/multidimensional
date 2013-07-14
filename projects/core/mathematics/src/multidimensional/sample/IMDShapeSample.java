@@ -14,5 +14,5 @@ import multidimensional.shape.IMDUniverse;
 public interface IMDShapeSample {
     String getTitle();
     int[] getDimensions();
-    IMDUniverse getUniverse(int dim, double radius, int M);
+    IMDUniverse getUniverse(int dim, double radius, int segmentation);
 }

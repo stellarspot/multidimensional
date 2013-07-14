@@ -30,7 +30,7 @@ public enum MDShapeSample implements IMDShapeSample {
             return DIMENSIONS;
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
+        public IMDUniverse getUniverse(int dim, double radius, int segmentation) {
             return getUniverse(dim, new MDCrossElem(dim, radius));
         }
     },
@@ -44,7 +44,7 @@ public enum MDShapeSample implements IMDShapeSample {
             return DIMENSIONS;
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
+        public IMDUniverse getUniverse(int dim, double radius, int segmentation) {
             return getUniverse(dim, new MDGridElem(dim, radius, 1));
         }
     },
@@ -58,7 +58,7 @@ public enum MDShapeSample implements IMDShapeSample {
             return DIMENSIONS;
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
+        public IMDUniverse getUniverse(int dim, double radius, int segmentation) {
             //return getUniverse(dim, new MDGridElem(dim, radius, M));
             int[] grid = new int[dim];
             for (int i = 0; i < dim; i++) {
@@ -77,7 +77,7 @@ public enum MDShapeSample implements IMDShapeSample {
             return DIMENSIONS;
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
+        public IMDUniverse getUniverse(int dim, double radius, int segmentation) {
             return getUniverse(dim, new MDTetrahedronElem(dim, radius));
         }
     },
@@ -91,8 +91,8 @@ public enum MDShapeSample implements IMDShapeSample {
             return DIMENSIONS;
         }
 
-        public IMDUniverse getUniverse(int dim, double radius, int M) {
-            return getUniverse(dim, new MDSphereElem(dim, radius, M));
+        public IMDUniverse getUniverse(int dim, double radius, int segmentation) {
+            return getUniverse(dim, new MDSphereElem(dim, radius, segmentation));
         }
     };
     private static final int d = 100;

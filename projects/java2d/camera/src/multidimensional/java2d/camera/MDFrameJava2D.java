@@ -29,7 +29,7 @@ public class MDFrameJava2D extends JFrame {
     private int dimension;
     private int dimensionIndex = 1;
     private double radius = 300;
-    private int M = 16;
+    private int segmentation = 16;
     private int sampleIndex = 2;
     private double angle;
     private IMDSwingCamera camera;
@@ -63,7 +63,7 @@ public class MDFrameJava2D extends JFrame {
 //            dimensionIndex = sample.getDimensions().length - 1;
 //        }
         int dimension = sample.getDimensions()[dimensionIndex];
-        universe = sample.getUniverse(dimension, radius, M);
+        universe = sample.getUniverse(dimension, radius, segmentation);
         universe.getCameras().addTail(camera);
 
         final MDAxesRotation[] rotations = MDAxesRotation.getRotations(dimension);
@@ -91,18 +91,20 @@ public class MDFrameJava2D extends JFrame {
         final JLabel status = new JLabel();
         IMDShapeSample sample = samples[sampleIndex];
 
-        final JComboBox dimensions = new JComboBox();
-        upateDimensions(sample, dimensions);
+        final JComboBox dimensionsComboBox = new JComboBox();
+        upateDimensions(sample, dimensionsComboBox);
 
-        dimensions.addActionListener(new ActionListener() {
+        dimensionsComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = dimensions.getSelectedIndex();
-                if (dimensionIndex != selectedIndex && dimensions.isEnabled() && 0 <= selectedIndex) {
+                int selectedIndex = dimensionsComboBox.getSelectedIndex();
+                if (dimensionIndex != selectedIndex && dimensionsComboBox.isEnabled() && 0 <= selectedIndex) {
                     dimensionIndex = selectedIndex;
                     updateSample();
                 }
             }
         });
+
+        final JComboBox segmentationComboBox = new JComboBox();
 
         DefaultListModel categoriesModel = new DefaultListModel();
 
@@ -120,7 +122,7 @@ public class MDFrameJava2D extends JFrame {
                 if (sampleIndex != selectedIndex) {
                     sampleIndex = selectedIndex;
                     // update dimensions
-                    upateDimensions(samples[sampleIndex], dimensions);
+                    upateDimensions(samples[sampleIndex], dimensionsComboBox);
                     updateSample();
                 }
             }
@@ -128,9 +130,14 @@ public class MDFrameJava2D extends JFrame {
 
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel dimensionsPanel = new JPanel(new BorderLayout());
         JPanel listPanel = new JPanel(new BorderLayout());
 
-        listPanel.add(dimensions, BorderLayout.NORTH);
+
+        dimensionsPanel.add(new JLabel("Dimension:"), BorderLayout.NORTH);
+        dimensionsPanel.add(dimensionsComboBox, BorderLayout.CENTER);
+
+        listPanel.add(dimensionsPanel, BorderLayout.NORTH);
         listPanel.add(sampleList, BorderLayout.CENTER);
 
         mainPanel.add(listPanel, BorderLayout.WEST);

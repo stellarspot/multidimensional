@@ -19,9 +19,9 @@ public class MDSphereElem implements IMDShapeElem {
     ICMDVector[] vertices;
     ICMDList<Segment> segments = new CMDList<Segment>();
 
-    public MDSphereElem(int dim, double radius, int M) {
+    public MDSphereElem(int dim, double radius, int segmentation) {
         //super(dim - 1, radius, M);
-        int[] grid = MDGridElem.toCells(dim - 1, M);
+        int[] grid = MDGridElem.toCells(dim - 1, segmentation);
         int[][] array = MDGridElem.getGrid(dim - 1, grid, segments, false);
 
 

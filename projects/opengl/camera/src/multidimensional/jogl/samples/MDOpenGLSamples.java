@@ -7,7 +7,6 @@ package multidimensional.jogl.samples;
 import javax.swing.SwingUtilities;
 import multidimensional.java2d.camera.MDFrameJava2D;
 import multidimensional.jogl.camera.MDCameraJOGL;
-import multidimensional.sample.MDPlotterSample;
 import multidimensional.sample.MDShapeSample;
 
 /**

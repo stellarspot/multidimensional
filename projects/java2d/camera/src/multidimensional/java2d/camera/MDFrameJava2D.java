@@ -58,11 +58,7 @@ public class MDFrameJava2D extends JFrame {
 
     void updateSample() {
         IMDShapeSample sample = samples[sampleIndex];
-//        System.out.println("dimensions: " + sample.getDimensions().length);
-//        if (sample.getDimensions().length <= sampleIndex) {
-//            dimensionIndex = sample.getDimensions().length - 1;
-//        }
-        int dimension = sample.getDimensions()[dimensionIndex];
+        dimension = sample.getDimensions()[dimensionIndex];
         universe = sample.getUniverse(dimension, radius, segmentation);
         universe.getCameras().addTail(camera);
 
